@@ -51,6 +51,7 @@ __pycache__/
 venv/
 .vtree
 vtree/
+debug.log
 /static/
 web/static/*
 docs/
