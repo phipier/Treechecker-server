@@ -99,7 +99,7 @@ class AOI(models.Model):
 
 	@property
 	def bbox(self):
-		return [self.y_min, self.x_min, self.y_max, self.x_max]
+		return [self.x_min, self.x_max, self.y_min, self.y_max]
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
