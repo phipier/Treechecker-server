@@ -136,19 +136,16 @@ class SurveyData(models.Model):
 	"""This class represents the survey data model."""
 
 	name = models.CharField(max_length=255, blank=False, unique=False, null=False)
-	tree_specie = models.ForeignKey(TreeSpecie, null=True, on_delete=models.SET_NULL)
-	crown_diameter = models.ForeignKey(CrownDiameter, null=True, on_delete=models.SET_NULL)
-	canopy_status = models.ForeignKey(CanopyStatus, null=True, on_delete=models.SET_NULL)
-	comment = models.TextField(blank=True, unique=False)
-	owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-	aoi = models.ForeignKey(AOI, null=True, on_delete=models.SET_NULL)
-	gz = models.ForeignKey(GeographicalZone, null=True, on_delete=models.SET_NULL)
-	longitude = models.FloatField()
-	latitude = models.FloatField()
-	compass = models.FloatField()
+	tree_specie = models.ForeignKey(TreeSpecie, null=False, on_delete=models.CASCADE)
+	crown_diameter = models.ForeignKey(CrownDiameter, null=False, on_delete=models.CASCADE)
+	canopy_status = models.ForeignKey(CanopyStatus, null=False, on_delete=models.CASCADE)
+	comment = models.TextField(blank=True, null=True, unique=False)
+	owner = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+	aoi = models.ForeignKey(AOI, null=False, on_delete=models.CASCADE)
+	longitude = models.FloatField(null=False)
+	latitude = models.FloatField(null=False)
 	creation_date = models.DateTimeField(auto_now_add=True)
 	update_date = models.DateTimeField(auto_now=True)
-	is_deleted = models.BooleanField(default=False)
 
 	@property
 	def position(self):
@@ -161,11 +158,9 @@ class SurveyData(models.Model):
 class Photo(models.Model):
 	"""This class represents the photo model."""
 
-	survey_data =  models.ForeignKey(SurveyData, on_delete=models.CASCADE)
-	longitude = models.FloatField()
-	latitude = models.FloatField()
-	compass = models.FloatField()
-	url = models.CharField(max_length=255, blank=False, unique=False)
+	survey_data =  models.ForeignKey(SurveyData, null=False, on_delete=models.CASCADE)
+	compass = models.FloatField(blank=True, null=True)
+	image = models.TextField(blank=False, null=False, unique=False)
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
