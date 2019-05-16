@@ -122,12 +122,12 @@ def addObservation(request, id):
 def observationView(request, id):
 	obsId = int(id)
 	if request.method == 'GET':
-		objs = SurveyData.objects.filter(id=obsId).filter(owner_id=request.user.id).filter(is_deleted=False)
+		objs = SurveyData.objects.filter(id=obsId).filter(owner_id=request.user.id)
 		serialized = SurveyDataSerializer(objs, context={'request': request}, many=True)
 		return JsonResponse(serialized.data, safe=False)
 
 	elif(request.method == 'PUT'):
-		obs = SurveyData.objects.filter(id=obsId).filter(is_deleted=False)
+		obs = SurveyData.objects.filter(id=obsId)
 
 		if(obs):
 			if(obs[0].owner.id == request.user.id):
@@ -156,14 +156,13 @@ def observationView(request, id):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
 	else:
-		obs = SurveyData.objects.filter(id=obsId).filter(is_deleted=False)
+		obs = SurveyData.objects.filter(id=obsId)
 
 		if(obs):
 
 			if(obs[0].owner.id == request.user.id):
 
 				obj = obs[0]
-				obj.is_deleted = True
 				obj.save()
 				return Response(status=status.HTTP_200_OK)
 
@@ -200,7 +199,7 @@ def addImage(request):
 	serialized = PhotoWriteSerializer(data=data, context={'request': request})
 
 	if (serialized.is_valid()):
-		obs = SurveyData.objects.filter(id=data['survey_data']).filter(is_deleted=False);
+		obs = SurveyData.objects.filter(id=data['survey_data']);
 		if (obs):
 			if(obs[0].owner.id == request.user.id):
 				serialized = serialized.save()
