@@ -68,7 +68,7 @@ class AOIReadSerializer(serializers.ModelSerializer):
 	def get_obs(self, instance):
 		request = self.context.get('request')
 		ruser = request.user
-		objs = SurveyData.objects.filter(owner_id=ruser.id).filter(aoi=instance).filter(is_deleted=False)
+		objs = SurveyData.objects.filter(owner_id=ruser.id).filter(aoi=instance)
 		serialized = SurveyDataSerializer(objs, context={'request': request}, many=True)
 		return serialized.data
 
