@@ -140,7 +140,7 @@ class SurveyData(models.Model):
 	crown_diameter = models.ForeignKey(CrownDiameter, null=False, on_delete=models.CASCADE)
 	canopy_status = models.ForeignKey(CanopyStatus, null=False, on_delete=models.CASCADE)
 	comment = models.TextField(blank=True, null=True, unique=False)
-	owner = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+	owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 	aoi = models.ForeignKey(AOI, null=False, on_delete=models.CASCADE)
 	longitude = models.FloatField(null=False)
 	latitude = models.FloatField(null=False)

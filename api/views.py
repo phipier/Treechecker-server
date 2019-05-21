@@ -100,7 +100,6 @@ def addObservation(request, id):
 			data = JSONParser().parse(request)
 			#data = request.data
 			data['aoi'] = aoiId
-			data['gz'] = aoi.geographical_zone.id
 			data['tree_specie'] = getTreeSpecie(data['tree_specie'], request)
 			serialized = SurveyDataWriteSerializer(data=data, context={'request': request})
 

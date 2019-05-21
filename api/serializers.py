@@ -167,7 +167,7 @@ class SurveyDataSerializer(serializers.ModelSerializer):
 		"""Meta class to map serializer's fields with the model fields."""
 		model = SurveyData
 		fields = ('key', 'name', 'tree_specie', 'crown_diameter', 'canopy_status',
-			'comment', 'position', 'compass', 'images')
+			'comment', 'position', 'images')
 		read_only_fields = ('creation_date', 'update_date')
 
 class SurveyDataWriteSerializer(serializers.ModelSerializer):
@@ -185,7 +185,6 @@ class SurveyDataWriteSerializer(serializers.ModelSerializer):
 		instance.comment = validated_data.get('comment', instance.comment)
 		instance.longitude = validated_data.get('longitude', instance.longitude)
 		instance.latitude = validated_data.get('latitude', instance.latitude)
-		instance.compass = validated_data.get('compass', instance.compass)
 
 		inputImages = self.context.get('imagesToKeep')
 		if inputImages:
@@ -202,7 +201,7 @@ class SurveyDataWriteSerializer(serializers.ModelSerializer):
 		"""Meta class to map serializer's fields with the model fields."""
 		model = SurveyData
 		fields = ('name', 'tree_specie', 'crown_diameter', 'canopy_status',
-			'comment', 'aoi', 'gz', 'longitude', 'latitude', 'compass')
+			'comment', 'aoi', 'longitude', 'latitude')
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -220,4 +219,4 @@ class PhotoWriteSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = Photo
-		fields = ('survey_data', 'latitude', 'longitude', 'compass', 'url')
+		fields = ('survey_data', 'compass', 'url')
