@@ -211,7 +211,7 @@ def addImage(request):
 			return Response(status=status.HTTP_404_NOT_FOUND)
 
 	else:
-		return Response(serialized.errors)
+		return Response(serialized.errors, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])
