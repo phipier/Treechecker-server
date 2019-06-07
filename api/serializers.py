@@ -47,8 +47,7 @@ class GeographicalZoneSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = GeographicalZone
-		fields = ('key', 'name', 'image_url', 'bbox', 'is_enabled')
-
+		fields = ('key', 'name', 'image_url', 'layer_name', 'wms_url', 'bbox', 'is_enabled')
 
 class GGZSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""

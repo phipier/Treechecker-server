@@ -58,7 +58,7 @@ class GeographicalZone(models.Model):
 	name = models.CharField(max_length=255, blank=False, unique=False)
 	country = models.ForeignKey(Country, null=True, on_delete=models.SET_NULL)
 	layer_name = models.CharField(max_length=255, blank=False, unique=False)
-	wms_url = models.CharField(max_length=255, blank=False, unique=False)
+	wms_url = models.TextField(blank=False, null=False, unique=False)
 	proj = models.CharField(max_length=255, blank=False, unique=False)
 	image_url = models.CharField(max_length=255, blank=False, unique=False)
 	x_min = models.FloatField()
