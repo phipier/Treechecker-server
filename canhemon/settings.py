@@ -12,6 +12,12 @@ DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'eqekTflbQR'
 
+if HOSTNAME.startswith("glenn"):
+    SERVER_ENV = "PROD"
+else:
+    SERVER_ENV = "DEV"
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -65,7 +71,7 @@ WSGI_APPLICATION = 'canhemon.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
 		'NAME': 'canhemon',
@@ -75,8 +81,16 @@ DATABASES = {
 		'PORT': '5432',
 	}
 }
+'''
 
-DATABASES = {
+
+if SERVER_ENV == "DEV" or SERVER_ENV == "STG" or SERVER_ENV == "LOCAL":
+    DEBUG = True
+else:
+    DEBUG = False
+
+if SERVER_ENV == "DEV":
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'canhemon',
@@ -86,7 +100,17 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+else:
+    DATABASES = {
+    'default':{ 
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Treechecker$db',
+        'USER': 'Treechecker',
+        'PASSWORD': 'Ispra678',
+        'HOST': 'Treechecker.mysql.pythonanywhere-services.com',
+        'PORT': ''
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
