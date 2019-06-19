@@ -14,6 +14,10 @@ admin.site.register(CanopyStatus)
 admin.site.register(CrownDiameter)
 admin.site.register(Metadata)
 admin.site.register(GGZ)
-admin.site.register(Photo)
+#admin.site.register(Photo)
 
+admin.site.site_header = 'Treechecker'
+admin.site.site_title = 'Treechecker'
+admin.site.site_url = None
+admin.site.index_title = "Data and configuration"
 

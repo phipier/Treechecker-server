@@ -8,6 +8,7 @@ class Country(models.Model):
 	code = models.CharField(max_length=20, blank=False, unique=True)
 
 	class Meta:
+		verbose_name = "Country"
 		verbose_name_plural = "Countries"
 
 	def __str__(self):
@@ -36,6 +37,10 @@ class User(AbstractUser):
 	language = models.CharField(max_length=255, blank=True, unique=False)
 	creation_date = models.DateTimeField(auto_now_add=True)
 	update_date = models.DateTimeField(auto_now=True)
+
+	class Meta:
+		verbose_name = "User"
+		verbose_name_plural = "Users"
 
 	@property
 	def gz(self):
@@ -69,6 +74,10 @@ class GeographicalZone(models.Model):
 	y_min = models.FloatField()
 	y_max = models.FloatField()
 
+	class Meta:
+		verbose_name = "Geographical Zone"
+		verbose_name_plural = "Geographical Zones"
+
 	@property
 	def bbox(self):
 		return [self.y_min, self.x_min, self.y_max, self.x_max]
@@ -82,6 +91,10 @@ class GGZ(models.Model):
 
 	group = models.ForeignKey(Group, on_delete=models.CASCADE)
 	geographical_zone = models.ForeignKey(GeographicalZone, on_delete=models.CASCADE)
+
+	class Meta:
+		verbose_name = "Geographical Zone / User Group"
+		verbose_name_plural = "Geographical Zones / User Groups"
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
@@ -100,6 +113,10 @@ class AOI(models.Model):
 	creation_date = models.DateTimeField(auto_now_add=True)
 	is_deleted = models.BooleanField(default=False)
 
+	class Meta:
+		verbose_name = "Area Of Interest (AOI)"
+		verbose_name_plural = "Areas Of Interest (AOI)"
+
 	@property
 	def bbox(self):
 		return [self.x_min, self.x_max, self.y_min, self.y_max]
@@ -113,6 +130,10 @@ class TreeSpecie(models.Model):
 
 	name = models.CharField(max_length=50, blank=False, unique=False)
 
+	class Meta:
+		verbose_name = "Tree Species"
+		verbose_name_plural = "Tree Species"
+
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
 		return "{}".format(self.name)
@@ -122,6 +143,10 @@ class CrownDiameter(models.Model):
 
 	name = models.CharField(max_length=50, blank=False, unique=False)
 
+	class Meta:
+		verbose_name = "Crown Diameter"
+		verbose_name_plural = "Crown Diameters"
+
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
 		return "{}".format(self.name)
@@ -130,6 +155,10 @@ class CanopyStatus(models.Model):
 	"""This class represents the canopy status model."""
 
 	name = models.CharField(max_length=50, blank=False, unique=False)
+
+	class Meta:
+		verbose_name = "Canopy Status"
+		verbose_name_plural = "Canopy Statuses"
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
@@ -150,6 +179,10 @@ class SurveyData(models.Model):
 	creation_date = models.DateTimeField(auto_now_add=True)
 	update_date = models.DateTimeField(auto_now=True)
 
+	class Meta:
+		verbose_name = "Survey Data"
+		verbose_name_plural = "Survey Data"
+
 	@property
 	def position(self):
 		return {"latitude": self.latitude, "longitude":self.longitude}
@@ -164,6 +197,10 @@ class Photo(models.Model):
 	survey_data =  models.ForeignKey(SurveyData, null=False, on_delete=models.CASCADE)
 	compass = models.FloatField(blank=True, null=True)
 	image = models.TextField(blank=False, null=False, unique=False)
+
+	class Meta:
+		verbose_name = "Photo"
+		verbose_name_plural = "Photos"
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
