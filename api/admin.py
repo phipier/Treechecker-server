@@ -12,12 +12,16 @@ admin.site.register(TreeSpecie)
 admin.site.register(SurveyData)
 admin.site.register(CanopyStatus)
 admin.site.register(CrownDiameter)
-admin.site.register(Metadata)
+#admin.site.register(Metadata)
 admin.site.register(GGZ)
 #admin.site.register(Photo)
 
+# defines content
 admin.site.site_header = 'Treechecker'
 admin.site.site_title = 'Treechecker'
 admin.site.site_url = None
 admin.site.index_title = "Data and configuration"
 
+# empties action panel # TO DO delete action panel
+from django.contrib.admin.models import LogEntry
+LogEntry.objects.all().delete()
