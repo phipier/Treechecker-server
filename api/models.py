@@ -7,6 +7,9 @@ class Country(models.Model):
 	name = models.CharField(max_length=100, blank=False, unique=False)
 	code = models.CharField(max_length=20, blank=False, unique=True)
 
+	class Meta:
+		verbose_name_plural = "Countries"
+
 	def __str__(self):
 		"""Return a human readable representation of the country instance."""
 		return "{0}, {1}".format(str(self.name), str(self.code))
