@@ -106,13 +106,14 @@ if SERVER_ENV == "DEV":
 }
 else:
     DATABASES = {
-    'default':{ 
+    'default':{
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'Treechecker$db',
         'USER': 'Treechecker',
         'PASSWORD': 'Ispra678',
         'HOST': 'Treechecker.mysql.pythonanywhere-services.com',
-        'PORT': ''
+        'PORT': '',
+        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
         }
     }
 
@@ -169,7 +170,7 @@ JWT_AUTH = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Rome'
- 
+
 USE_I18N = True
 
 USE_L10N = True
@@ -201,7 +202,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR,'debug.log'),            
+            'filename': os.path.join(BASE_DIR,'debug.log'),
             'backupCount': 2, # keep at most 10 log files
             'maxBytes': 5242880, # 5*1024*1024 bytes (5MB)
         },

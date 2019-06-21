@@ -65,14 +65,16 @@ class GeographicalZone(models.Model):
 
 	name = models.CharField(max_length=255, blank=False, unique=False)
 	country = models.ForeignKey(Country, null=True, on_delete=models.SET_NULL)
-	#layer_name = models.CharField(max_length=255, blank=False, unique=False)
 	wms_url = models.TextField("WMS URLs", blank=False, null=False, unique=False)
-	#proj = models.CharField(max_length=255, blank=False, unique=False)
-	#image_url = models.CharField(max_length=255, blank=False, unique=False)
+
 	x_min = models.FloatField("longitude min (in decimal degrees)", blank=False, unique=False)
 	x_max = models.FloatField("longitude max (in decimal degrees)", blank=False, unique=False)
 	y_min = models.FloatField("latitude min (in decimal degrees)", blank=False, unique=False)
 	y_max = models.FloatField("latitude max (in decimal degrees)", blank=False, unique=False)
+
+	#proj = models.CharField(max_length=255, blank=False, unique=False)
+	#image_url = models.CharField(max_length=255, blank=False, unique=False)
+	#layer_name = models.CharField(max_length=255, blank=False, unique=False)
 
 	class Meta:
 		verbose_name = "Geographical Zone"
@@ -128,7 +130,7 @@ class AOI(models.Model):
 class TreeSpecie(models.Model):
 	"""This class represents the Tree specie model."""
 
-	name = models.CharField(max_length=50, blank=False, unique=False)
+	name = models.CharField("Name", max_length=50, blank=False, unique=False)
 
 	class Meta:
 		verbose_name = "Tree Species"
@@ -158,7 +160,7 @@ class CanopyStatus(models.Model):
 
 	class Meta:
 		verbose_name = "Canopy Status"
-		verbose_name_plural = "Canopy Statuses"
+		verbose_name_plural = "Canopy Status"
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
@@ -172,7 +174,7 @@ class SurveyData(models.Model):
 	crown_diameter = models.ForeignKey(CrownDiameter, null=False, on_delete=models.CASCADE)
 	canopy_status = models.ForeignKey(CanopyStatus, null=False, on_delete=models.CASCADE)
 	comment = models.TextField(blank=True, null=True, unique=False)
-	owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+	#owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 	aoi = models.ForeignKey(AOI, null=False, on_delete=models.CASCADE)
 	longitude = models.FloatField(null=False)
 	latitude = models.FloatField(null=False)

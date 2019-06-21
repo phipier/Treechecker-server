@@ -14,7 +14,7 @@ admin.site.register(CanopyStatus)
 admin.site.register(CrownDiameter)
 #admin.site.register(Metadata)
 admin.site.register(GGZ)
-#admin.site.register(Photo)
+admin.site.register(Photo)
 
 # defines content
 admin.site.site_header = 'Treechecker'
