@@ -26,8 +26,7 @@ urlpatterns = [
     url(r'^config/', admin.site.urls),
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^api/', include('api.urls')),
-    url(r'^.*$', RedirectView.as_view(url='config/', permanent=False), name='index')
+    url(r'^api/', include('api.urls'))
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -29,7 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = User
-		fields = ('key' ,'name', 'username', 'email', 'occupation', 'country', 
+		fields = ('key' ,'name', 'username', 'email', 'occupation', 'country',
 			'language')
 
 
@@ -47,7 +47,7 @@ class GeographicalZoneSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = GeographicalZone
-		fields = ('key', 'name', 'image_url', 'layer_name', 'wms_url', 'bbox', 'is_enabled')
+		fields = ('key', 'name', 'wms_url', 'bbox', 'is_enabled')
 
 class GGZSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
@@ -187,12 +187,12 @@ class SurveyDataWriteSerializer(serializers.ModelSerializer):
 
 		inputImages = self.context.get('imagesToKeep')
 		if inputImages:
-		
+
 			currentImages = Photo.objects.filter(survey_data_id=instance.id).values_list('id', flat=True)
 
 			imagesToDelete = set(currentImages) - set(inputImages)
 			Photo.objects.filter(id__in=imagesToDelete).filter(survey_data_id=instance.id).delete()
-			
+
 		instance.save()
 		return instance
 

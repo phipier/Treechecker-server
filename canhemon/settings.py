@@ -12,6 +12,10 @@ DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'eqekTflbQR'
 
+import socket
+
+HOSTNAME = socket.gethostname()
+
 if HOSTNAME.startswith("glenn"):
     SERVER_ENV = "PROD"
 else:
@@ -184,11 +188,11 @@ MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
 # SSL
 # ------------------------------------------------------------------------------
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_AGE = 900
+#SECURE_SSL_REDIRECT = False
+#SESSION_COOKIE_SECURE = False
+#CSRF_COOKIE_SECURE = False
+#CSRF_COOKIE_HTTPONLY = False
+#SESSION_COOKIE_AGE = 900
 
 LOGGING = {
     'version': 1,
@@ -208,10 +212,15 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-    },
+        'django.template': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
 }
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
+#try:
+#    from local_settings import *
+#except ImportError:
+#    pass

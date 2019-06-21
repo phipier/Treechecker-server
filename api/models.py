@@ -54,7 +54,7 @@ class User(AbstractUser):
 		"""Return a human readable representation of the model instance."""
 		return "{}".format(str(self.name))
 
-	def get_full_name(self): 
+	def get_full_name(self):
 		return self.name
 
 	def get_short_name(self):
@@ -65,14 +65,14 @@ class GeographicalZone(models.Model):
 
 	name = models.CharField(max_length=255, blank=False, unique=False)
 	country = models.ForeignKey(Country, null=True, on_delete=models.SET_NULL)
-	layer_name = models.CharField(max_length=255, blank=False, unique=False)
-	wms_url = models.TextField(blank=False, null=False, unique=False)
-	proj = models.CharField(max_length=255, blank=False, unique=False)
-	image_url = models.CharField(max_length=255, blank=False, unique=False)
-	x_min = models.FloatField()
-	x_max = models.FloatField()
-	y_min = models.FloatField()
-	y_max = models.FloatField()
+	#layer_name = models.CharField(max_length=255, blank=False, unique=False)
+	wms_url = models.TextField("WMS URLs", blank=False, null=False, unique=False)
+	#proj = models.CharField(max_length=255, blank=False, unique=False)
+	#image_url = models.CharField(max_length=255, blank=False, unique=False)
+	x_min = models.FloatField("longitude min (in decimal degrees)", blank=False, unique=False)
+	x_max = models.FloatField("longitude max (in decimal degrees)", blank=False, unique=False)
+	y_min = models.FloatField("latitude min (in decimal degrees)", blank=False, unique=False)
+	y_max = models.FloatField("latitude max (in decimal degrees)", blank=False, unique=False)
 
 	class Meta:
 		verbose_name = "Geographical Zone"

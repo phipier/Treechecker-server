@@ -34,7 +34,7 @@ def custom_exception_handler(exc, context):
 def getGZ(request):
 	objs = GeographicalZone.objects.all()
 	serialized = GeographicalZoneSerializer(objs, context={'request': request}, many=True)
-	
+
 	return JsonResponse(serialized.data, safe=False);
 
 
@@ -114,7 +114,7 @@ def addObservation(request, id):
 
 	else:
 		return Response(status=status.HTTP_404_NOT_FOUND)
-	
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes((IsAuthenticated, ))
@@ -174,18 +174,18 @@ def observationView(request, id):
 
 
 def getTreeSpecie(idOrName, request):
-	''' 
+	'''
 		Check to see if the input value is an id.
 		If it isn't, we create a new TreeSpecie with the input value as name
 	'''
 	if(isinstance(idOrName, int )):
 		obs = TreeSpecie.objects.filter(id=idOrName)
 		if(obs):
-			return idOrName;	
+			return idOrName;
 
 	serialized = TreeSpecieWriteSerializer(data={'name': idOrName},  context={'request': request})
 	if(serialized.is_valid()):
-		
+
 		serialized = serialized.save()
 		serialized = TreeSpecieSerializer(serialized, context={'request': request}, many=False)
 		return serialized.data['key']
@@ -219,7 +219,7 @@ def addImage(request):
 def getSpecies(request):
 	objs = TreeSpecie.objects.all()
 	serialized = TreeSpecieSerializer(objs, context={'request': request}, many=True)
-	
+
 	return JsonResponse(serialized.data, safe=False);
 
 
@@ -228,7 +228,7 @@ def getSpecies(request):
 def getCrowns(request):
 	objs = CrownDiameter.objects.all()
 	serialized = CrownDiameterSerializer(objs, context={'request': request}, many=True)
-	
+
 	return JsonResponse(serialized.data, safe=False);
 
 
@@ -237,7 +237,7 @@ def getCrowns(request):
 def getCanopies(request):
 	objs = CanopyStatus.objects.all()
 	serialized = CanopyStatusSerializer(objs, context={'request': request}, many=True)
-	
+
 	return JsonResponse(serialized.data, safe=False);
 
 
@@ -247,14 +247,14 @@ def fileUploadView(request):
     try:
         data = JSONParser().parse(request)
         data = data['image']
-        format, imgstr = data.split(';base64,') 
-        ext = format.split('/')[-1] 
-    
+        format, imgstr = data.split(';base64,')
+        ext = format.split('/')[-1]
+
         data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
         imagePath = 'obs/' + get_random_string(length=32) + '.' + ext
         path = djangoSettings.MEDIA_ROOT + '/' + imagePath
         default_storage.save(path, data)
-        
+
         return JsonResponse({"url": djangoSettings.MEDIA_URL + imagePath}, safe=False)
     except:
         return JsonResponse({"error": "Request error"}, safe=False)
