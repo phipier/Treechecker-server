@@ -208,10 +208,10 @@ def addImage(request):
 				return Response(status=status.HTTP_403_FORBIDDEN)
 
 		else:
-			return Response(status=status.HTTP_404_NOT_FOUND)
+			return Response(status=503)
 
 	else:
-		return Response(serialized.errors, status=status.HTTP_404_NOT_FOUND)
+		return Response(serialized.errors, status=503)
 
 
 @api_view(['GET'])
