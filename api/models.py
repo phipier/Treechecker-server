@@ -130,7 +130,7 @@ class AOI(models.Model):
 class TreeSpecie(models.Model):
 	"""This class represents the Tree specie model."""
 
-	name = models.CharField("Name", max_length=50, blank=False, unique=False)
+	name = models.CharField(max_length=50, blank=False, unique=True)
 
 	class Meta:
 		verbose_name = "Tree Species"
@@ -143,7 +143,7 @@ class TreeSpecie(models.Model):
 class CrownDiameter(models.Model):
 	"""This class represents the crown diameter model."""
 
-	name = models.CharField(max_length=50, blank=False, unique=False)
+	name = models.CharField(max_length=50, blank=False, unique=True)
 
 	class Meta:
 		verbose_name = "Crown Diameter"
@@ -156,7 +156,7 @@ class CrownDiameter(models.Model):
 class CanopyStatus(models.Model):
 	"""This class represents the canopy status model."""
 
-	name = models.CharField(max_length=50, blank=False, unique=False)
+	name = models.CharField(max_length=50, blank=False, unique=True)
 
 	class Meta:
 		verbose_name = "Canopy Status"

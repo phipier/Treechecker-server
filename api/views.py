@@ -100,7 +100,7 @@ def addObservation(request, id):
 			data = JSONParser().parse(request)
 			#data = request.data
 			data['aoi'] = aoiId
-			data['tree_specie'] = getTreeSpecie(data['tree_specie'], request)
+			#data['tree_specie'] = getTreeSpecie(data['tree_specie'], request)
 			serialized = SurveyDataWriteSerializer(data=data, context={'request': request})
 
 			if (serialized.is_valid()):
@@ -134,7 +134,7 @@ def observationView(request, id):
 				data = JSONParser().parse(request)
 				obj = obs[0]
 
-				data['tree_specie'] = getTreeSpecie(data['tree_specie'], request)
+				#data['tree_specie'] = getTreeSpecie(data['tree_specie'], request)
 				if 'images' in data:
 					imagesToKeep = data['images']
 				else:
