@@ -23,7 +23,7 @@ from rest_framework_jwt.views import refresh_jwt_token
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^config/', admin.site.urls),
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
     url(r'^api/', include('api.urls'))

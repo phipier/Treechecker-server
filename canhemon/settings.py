@@ -16,17 +16,19 @@ import socket
 
 HOSTNAME = socket.gethostname()
 
-if HOSTNAME.startswith("glenn"):
-    SERVER_ENV = "PROD"
-else:
+if HOSTNAME.startswith("accent") or HOSTNAME.startswith("fise"):
     SERVER_ENV = "DEV"
+else:
+    SERVER_ENV = "PROD"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['127.0.0.1', 'treechecker.ies.jrc.it', '139.191.148.61']
-ALLOWED_HOSTS = ['*']
+if SERVER_ENV == "DEV":
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['treechecker.pythonanywhere.com']
 
 # Application definition
 
