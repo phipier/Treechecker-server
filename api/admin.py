@@ -31,17 +31,12 @@ class ExportCsvMixin:
 
     export_as_csv.short_description = "Export Selected"
 
-class SurveyDataAdmin(admin.ModelAdmin):
+# @admin.register(SurveyData)
+class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('name', 'comment', 'canopy_status', 'aoi', 'longitude', 'latitude')    
     search_fields = ('name', 'aoi', 'canopy_status')
     list_per_page = 25
     actions = ["export_as_csv"]
-
-    def get_actions(self, request):
-        actions = super().get_actions(request)
-        if 'delete_selected' in actions:
-            del actions['delete_selected']
-        return actions
 
 admin.site.register(SurveyData, SurveyDataAdmin)
 admin.site.register(CanopyStatus)
