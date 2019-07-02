@@ -32,8 +32,7 @@ class ExportCsvMixin:
     export_as_csv.short_description = "Export Selected"
 
 class SurveyDataAdmin(admin.ModelAdmin):
-    list_display = ('name', 'comment', 'canopy_status', 'aoi', 'longitude', 'latitude')
-    list_display_links = ('name')
+    list_display = ('name', 'comment', 'canopy_status', 'aoi', 'longitude', 'latitude')    
     search_fields = ('name', 'aoi', 'canopy_status')
     list_per_page = 25
     actions = ["export_as_csv"]
