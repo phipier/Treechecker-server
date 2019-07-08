@@ -200,7 +200,7 @@ class Photo(models.Model):
 	compass = models.FloatField(blank=True, null=True)
 	comment = models.TextField(blank=True, null=True, unique=False)
 	image = models.TextField(blank=False, null=False, unique=False)
-	img = models.FileField("Image file", upload_to='uploads/%Y/%m/%d/',blank=True, null=True, unique=False)	
+	img = models.ImageField("Image file", upload_to='uploads/%Y/%m/%d/',blank=True, null=True, unique=False)	
 
 	class Meta:
 		verbose_name = "Photo"
