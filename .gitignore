@@ -35,5 +35,5 @@ debug.log
 web/static/*
 docs/
 web/canhemon/settings.py
-web/media/*
+media/
 *.pyc
