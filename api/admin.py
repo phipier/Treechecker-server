@@ -8,7 +8,7 @@ from django.http import HttpResponse
 # Register your models here.
 admin.site.register(User, UserAdmin)
 
-admin.site.register(AOI)
+
 admin.site.register(GeographicalZone)
 admin.site.register(Country)
 admin.site.register(TreeSpecie)
@@ -31,13 +31,29 @@ class ExportCsvMixin:
 
     export_as_csv.short_description = "Export Selected"
 
+class PhotoInline(admin.TabularInline):
+    model = Photo
+    extra=0
+
+#class SurveyDataInline(admin.TabularInline):
+#    model = SurveyData
+#    extra=0
+
 # @admin.register(SurveyData)
 class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('name', 'comment', 'canopy_status', 'aoi', 'longitude', 'latitude')    
     search_fields = ('name', 'aoi', 'canopy_status')
     list_per_page = 25
     actions = ["export_as_csv"]
+    inlines = [PhotoInline,]
 
+class AOIAdmin(admin.ModelAdmin):
+    list_display = ('name', 'geographical_zone', 'x_min', 'y_min', 'x_max', 'y_max')    
+    search_fields = ('name', 'geographical_zone')
+    list_per_page = 25
+#    inlines = [SurveyDataInline,]
+
+admin.site.register(AOI, AOIAdmin)
 admin.site.register(SurveyData, SurveyDataAdmin)
 admin.site.register(CanopyStatus)
 admin.site.register(CrownDiameter)

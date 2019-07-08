@@ -170,8 +170,8 @@ class SurveyData(models.Model):
 	"""This class represents the survey data model."""
 
 	name = models.CharField(max_length=255, blank=False, unique=False, null=False)
-	tree_specie = models.ForeignKey(TreeSpecie, null=True, on_delete=models.CASCADE)
-	crown_diameter = models.ForeignKey(CrownDiameter, null=True, on_delete=models.CASCADE)
+	tree_specie = models.ForeignKey(TreeSpecie, blank=True, null=True, on_delete=models.CASCADE)
+	crown_diameter = models.ForeignKey(CrownDiameter, blank=True, null=True, on_delete=models.CASCADE)
 	canopy_status = models.ForeignKey(CanopyStatus, null=False, on_delete=models.CASCADE)
 	comment = models.TextField(blank=True, null=True, unique=False)
 	owner = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
