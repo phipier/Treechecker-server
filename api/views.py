@@ -198,10 +198,30 @@ def addImage(request):
 	serialized = PhotoWriteSerializer(data=data, context={'request': request})
 
 	if (serialized.is_valid()):
-		obs = SurveyData.objects.filter(id=data['survey_data']);
+		obs = SurveyData.objects.filter(id=data['survey_data'])
 		if (obs):
 			if(obs[0].owner.id == request.user.id):
+				
+
+				# access the data as serializer.validated_data['keys']
+				# save the MyPhoto obj lets call it myphoto
+				# get the base64 string 
+				imgstr64 = serialized.validated_data['image']
+
 				serialized = serialized.save()
+
+				format, imgstr = imgstr64.split(';base64,')
+
+				ext = format.split('/')[-1]
+				
+				imgcf = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+				#imgname = '%s.jpg'%(str(myphoto.id))
+				imagePath = 'surveydata/' + get_random_string(length=32) + '.' + ext
+				path = djangoSettings.MEDIA_ROOT + '/' + imagePath
+
+				myphoto.img.save(path, imgcf)
+	
+
 				serialized = PhotoSerializer(serialized, context={'request': request}, many=False)
 				return JsonResponse(serialized.data, safe=False)
 			else:
