@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, AOI, GeographicalZone, Country, TreeSpecie, SurveyData, CanopyStatus, CrownDiameter, Metadata, GGZ, Photo
+from .models import User, AOI, GeographicalZone, Country, TreeSpecies, SurveyData, CanopyStatus, CrownDiameter, Metadata, GGZ, Photo
 from django.utils.safestring import mark_safe
 import csv
 from django.http import HttpResponse
@@ -11,7 +11,7 @@ admin.site.register(User, UserAdmin)
 
 admin.site.register(GeographicalZone)
 admin.site.register(Country)
-admin.site.register(TreeSpecie)
+admin.site.register(TreeSpecies)
 
 class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
@@ -35,14 +35,13 @@ class PhotoInline(admin.TabularInline):
     model = Photo
     extra=0
     #readonly_fields = ["thumbnail_img","thumbnail_image"]
-    readonly_fields = ["thumbnail_image"]
-    fields = ('thumbnail_image',)
+    readonly_fields = ["picture"]
+    fields = ('picture',)
     
-    def thumbnail_image(self, obj):
+    def picture(self, obj):
         return mark_safe('<img src="{base64str}" height="{height}"/>'.format(
             base64str = obj.image,
-            height=200
-            #height=obj.img.height/4,
+            height=300            
             )
     )
     """
@@ -61,9 +60,12 @@ class PhotoInline(admin.TabularInline):
 
 # @admin.register(SurveyData)
 class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin):
-    list_display = ('name', 'comment', 'canopy_status', 'aoi', 'longitude', 'latitude')    
-    search_fields = ('name', 'aoi', 'canopy_status')
-    list_per_page = 25
+    list_display = ('aoi', 'name', 'comment', 'canopy_status',  'longitude', 'latitude')
+    fields = ('aoi', ('name', 'comment'), ('canopy_status','tree_species','crown_diameter'), ('longitude', 'latitude'))
+    search_fields = ('name', 'aoi__name', 'canopy_status__name', 'tree_species__name')
+    readonly_fields = ('aoi',)
+    list_filter = ('aoi','canopy_status')
+    list_per_page = 50
     actions = ["export_as_csv"]
     inlines = [PhotoInline,]
 

@@ -173,21 +173,21 @@ def observationView(request, id):
 
 
 
-def getTreeSpecie(idOrName, request):
+def getTreeSpecies(idOrName, request):
 	'''
 		Check to see if the input value is an id.
-		If it isn't, we create a new TreeSpecie with the input value as name
+		If it isn't, we create a new TreeSpecies with the input value as name
 	'''
 	if(isinstance(idOrName, int )):
-		obs = TreeSpecie.objects.filter(id=idOrName)
+		obs = TreeSpecies.objects.filter(id=idOrName)
 		if(obs):
 			return idOrName;
 
-	serialized = TreeSpecieWriteSerializer(data={'name': idOrName},  context={'request': request})
+	serialized = TreeSpeciesWriteSerializer(data={'name': idOrName},  context={'request': request})
 	if(serialized.is_valid()):
 
 		serialized = serialized.save()
-		serialized = TreeSpecieSerializer(serialized, context={'request': request}, many=False)
+		serialized = TreeSpeciesSerializer(serialized, context={'request': request}, many=False)
 		return serialized.data['key']
 
 
@@ -237,8 +237,8 @@ def addImage(request):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def getSpecies(request):
-	objs = TreeSpecie.objects.all()
-	serialized = TreeSpecieSerializer(objs, context={'request': request}, many=True)
+	objs = TreeSpecies.objects.all()
+	serialized = TreeSpeciesSerializer(objs, context={'request': request}, many=True)
 
 	return JsonResponse(serialized.data, safe=False);
 

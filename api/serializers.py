@@ -92,25 +92,25 @@ class AOIWriteSerializer(serializers.ModelSerializer):
 		fields = ('name', 'x_min', 'x_max', 'y_min', 'y_max', 'geographical_zone', 'owner')
 
 
-class TreeSpecieSerializer(serializers.ModelSerializer):
+class TreeSpeciesSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
 	key = serializers.IntegerField(source='id')
 
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
-		model = TreeSpecie
+		model = TreeSpecies
 		fields = ('key' ,'name', )
 
 
-class TreeSpecieWriteSerializer(serializers.ModelSerializer):
+class TreeSpeciesWriteSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
 
 	def create(self, validated_data):
-		return TreeSpecie.objects.create(**validated_data)
+		return TreeSpecies.objects.create(**validated_data)
 
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
-		model = TreeSpecie
+		model = TreeSpecies
 		fields = ('name', )
 
 
@@ -144,7 +144,7 @@ class SurveyDataSerializer(serializers.ModelSerializer):
 
 	def get_tree_specie(self, instance):
 		request = self.context.get('request')
-		serializer = TreeSpecieSerializer(instance.tree_specie, context={'request': request})
+		serializer = TreeSpeciesSerializer(instance.tree_specie, context={'request': request})
 		return serializer.data
 
 	def get_crown_diameter(self, instance):
@@ -178,7 +178,7 @@ class SurveyDataWriteSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		instance.name = validated_data.get('name', instance.name)
-		instance.tree_specie = validated_data.get('tree_specie', instance.tree_specie)
+		instance.tree_species = validated_data.get('tree_specie', instance.tree_specie)
 		instance.crown_diameter = validated_data.get('crown_diameter', instance.crown_diameter)
 		instance.canopy_status = validated_data.get('canopy_status', instance.canopy_status)
 		instance.comment = validated_data.get('comment', instance.comment)

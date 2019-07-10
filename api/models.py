@@ -127,7 +127,7 @@ class AOI(models.Model):
 		"""Return a human readable representation of the model instance."""
 		return "{}".format(self.name)
 
-class TreeSpecie(models.Model):
+class TreeSpecies(models.Model):
 	"""This class represents the Tree specie model."""
 
 	name = models.CharField(max_length=50, blank=False, unique=True)
@@ -170,7 +170,7 @@ class SurveyData(models.Model):
 	"""This class represents the survey data model."""
 
 	name = models.CharField(max_length=255, blank=False, unique=False, null=False)
-	tree_specie = models.ForeignKey(TreeSpecie, blank=True, null=True, on_delete=models.CASCADE)
+	tree_species = models.ForeignKey(TreeSpecies, blank=True, null=True, on_delete=models.CASCADE)
 	crown_diameter = models.ForeignKey(CrownDiameter, blank=True, null=True, on_delete=models.CASCADE)
 	canopy_status = models.ForeignKey(CanopyStatus, null=False, on_delete=models.CASCADE)
 	comment = models.TextField(blank=True, null=True, unique=False)
