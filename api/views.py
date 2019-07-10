@@ -28,7 +28,7 @@ def custom_exception_handler(exc, context):
         response.data = custom_response_data
     return response
 
-# Gets the zones. Only the ones available to the user are enabled
+# Gets the geographical zones. Only the ones available to the user are enabled
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def getGZ(request):

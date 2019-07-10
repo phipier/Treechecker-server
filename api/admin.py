@@ -7,8 +7,6 @@ from django.http import HttpResponse
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
-
-
 admin.site.register(GeographicalZone)
 admin.site.register(Country)
 admin.site.register(TreeSpecies)
@@ -60,7 +58,7 @@ class PhotoInline(admin.TabularInline):
 
 # @admin.register(SurveyData)
 class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin):
-    list_display = ('aoi', 'name', 'comment', 'canopy_status',  'longitude', 'latitude')
+    list_display = ('aoi', 'name', 'canopy_status',  'longitude', 'latitude')
     fields = ('aoi', ('name', 'comment'), ('canopy_status','tree_species','crown_diameter'), ('longitude', 'latitude'))
     search_fields = ('name', 'aoi__name', 'canopy_status__name', 'tree_species__name')
     readonly_fields = ('aoi',)
