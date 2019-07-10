@@ -104,12 +104,11 @@ class GGZ(models.Model):
 
 class AOI(models.Model):
 	"""This class represents the AOI model."""
-
 	name = models.CharField(max_length=100, blank=False, unique=False)
-	x_min = models.FloatField()
-	x_max = models.FloatField()
-	y_min = models.FloatField()
-	y_max = models.FloatField()
+	x_min = models.FloatField("longitude min (in decimal degrees)")
+	x_max = models.FloatField("longitude max (in decimal degrees)")
+	y_min = models.FloatField("latitude max (in decimal degrees)")
+	y_max = models.FloatField("latitude min (in decimal degrees)")
 	owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 	geographical_zone = models.ForeignKey(GeographicalZone, on_delete=models.CASCADE)
 	creation_date = models.DateTimeField(auto_now_add=True)
