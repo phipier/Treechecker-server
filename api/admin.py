@@ -34,15 +34,26 @@ class ExportCsvMixin:
 class PhotoInline(admin.TabularInline):
     model = Photo
     extra=0
+    #readonly_fields = ["thumbnail_img","thumbnail_image"]
     readonly_fields = ["thumbnail_image"]
-
+    fields = ('thumbnail_image',)
+    
     def thumbnail_image(self, obj):
+        return mark_safe('<img src="{base64str}" height="{height}"/>'.format(
+            base64str = obj.image,
+            height=200
+            #height=obj.img.height/4,
+            )
+    )
+    """
+    def thumbnail_img(self, obj):
         return mark_safe('<img src="{url}" height="{height}"/>'.format(
             url = obj.img.url,
             height=200
             #height=obj.img.height/4,
             )
     )
+    """
 
 #class SurveyDataInline(admin.TabularInline):
 #    model = SurveyData
@@ -62,6 +73,7 @@ class AOIAdmin(admin.ModelAdmin):
     list_per_page = 25
 #    inlines = [SurveyDataInline,]
 
+"""
 class PhotoAdmin(admin.ModelAdmin):
 
     readonly_fields = ["thumbnail_image"]
@@ -73,6 +85,7 @@ class PhotoAdmin(admin.ModelAdmin):
             height=obj.img.height/2,
             )
     )
+"""
 
 admin.site.register(AOI, AOIAdmin)
 admin.site.register(SurveyData, SurveyDataAdmin)
@@ -80,7 +93,7 @@ admin.site.register(CanopyStatus)
 admin.site.register(CrownDiameter)
 #admin.site.register(Metadata)
 admin.site.register(GGZ)
-admin.site.register(Photo, PhotoAdmin)
+#admin.site.register(Photo, PhotoAdmin)
 
 # defines content
 admin.site.site_header = 'Treechecker'
