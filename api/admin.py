@@ -62,15 +62,16 @@ class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin):
     fields = ('aoi', ('name', 'comment'), ('canopy_status','tree_species','crown_diameter'), ('longitude', 'latitude'))
     search_fields = ('name', 'aoi__name', 'canopy_status__name', 'tree_species__name')
     readonly_fields = ('aoi',)
-    list_filter = ('aoi','canopy_status')
+    list_filter = ('canopy_status','aoi')
     list_per_page = 50
     actions = ["export_as_csv"]
     inlines = [PhotoInline,]
+    save_on_top = True
 
 class AOIAdmin(admin.ModelAdmin):
     list_display = ('name', 'geographical_zone')  
     fields = ('name', ('x_min', 'x_max'), ('y_max', 'y_min'), 'geographical_zone', 'owner')  
-    search_fields = ('name', 'geographical_zone')
+    search_fields = ('name', 'geographical_zone__name')
     readonly_fields = ('x_min', 'x_max', 'y_min', 'y_max', 'geographical_zone', 'owner')
     list_per_page = 25
 #    inlines = [SurveyDataInline,]

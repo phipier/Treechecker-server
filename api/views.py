@@ -97,10 +97,8 @@ def addObservation(request, id):
 	if(aoi):
 		aoi = aoi[0]
 		if(aoi.owner.id == request.user.id):
-			data = JSONParser().parse(request)
-			#data = request.data
-			data['aoi'] = aoiId
-			#data['tree_specie'] = getTreeSpecie(data['tree_specie'], request)
+			data = JSONParser().parse(request)			
+			data['aoi'] = aoiId			
 			serialized = SurveyDataWriteSerializer(data=data, context={'request': request})
 
 			if (serialized.is_valid()):
