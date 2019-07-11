@@ -30,6 +30,17 @@ if SERVER_ENV == "DEV":
 else:
     ALLOWED_HOSTS = ['treechecker.pythonanywhere.com']
 
+
+# set models ordering
+"""
+ADMIN_ORDERING = [
+    ('api', [
+        'GeographicalZone',
+        'AOI'
+    ]),
+]
+"""
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +51,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'rest_framework',
-	'api'
+	'api.apps.ApiConfig'
 ]
 
 MIDDLEWARE = [

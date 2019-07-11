@@ -98,11 +98,22 @@ admin.site.register(CrownDiameter)
 admin.site.register(GGZ)
 #admin.site.register(Photo, PhotoAdmin)
 
+
+# Creating a sort function
+def get_app_list(self, request):
+    app_dict = self._build_app_dict(request)
+    for app_name, object_list in [('api', ['GeographicalZone','AOI', 'SurveyData', 'Photo','TreeSpecies', 'CanopyStatus', 'CrownDiameter', 'Country', 'GGZ', 'User'])]:
+        app = app_dict[app_name]
+        app['models'].sort(key=lambda x: object_list.index(x['object_name']))
+        yield app
+
+admin.AdminSite.get_app_list = get_app_list
+
 # defines content
 admin.site.site_header = 'Treechecker'
-admin.site.site_title = 'Treechecker'
+admin.site.site_title = ''
 admin.site.site_url = None
-admin.site.index_title = "Data and configuration"
+admin.site.index_title = 'Welcome to Treechecker'
 
 # empties action panel # TO DO delete action panel
 from django.contrib.admin.models import LogEntry
