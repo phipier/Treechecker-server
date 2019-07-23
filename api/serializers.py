@@ -178,7 +178,7 @@ class SurveyDataWriteSerializer(serializers.ModelSerializer):
 
 	def update(self, instance, validated_data):
 		instance.name = validated_data.get('name', instance.name)
-		instance.tree_species = validated_data.get('tree_specie', instance.tree_species)
+		instance.tree_species = validated_data.get('tree_species', instance.tree_species)
 		instance.crown_diameter = validated_data.get('crown_diameter', instance.crown_diameter)
 		instance.canopy_status = validated_data.get('canopy_status', instance.canopy_status)
 		instance.comment = validated_data.get('comment', instance.comment)
@@ -218,4 +218,4 @@ class PhotoWriteSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = Photo
-		fields = ('survey_data', 'compass', 'image')
+		fields = ('survey_data', 'compass', 'image', 'comment')

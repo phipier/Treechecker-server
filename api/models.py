@@ -127,7 +127,7 @@ class AOI(models.Model):
 		return "{}".format(self.name)
 
 class TreeSpecies(models.Model):
-	"""This class represents the Tree specie model."""
+	"""This class represents the Tree species model."""
 
 	name = models.CharField(max_length=50, blank=False, unique=True)
 
