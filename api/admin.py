@@ -34,12 +34,12 @@ class PhotoInline(admin.TabularInline):
     extra=0
     #readonly_fields = ["thumbnail_img","thumbnail_image"]
     readonly_fields = ["picture"]
-    fields = ('picture',)
+    fields = ('picture','comment','compass')
     
     def picture(self, obj):
         return mark_safe('<img src="{base64str}" height="{height}"/>'.format(
             base64str = obj.image,
-            height=300            
+            height=500            
             )
     )
     """
@@ -73,8 +73,14 @@ class AOIAdmin(admin.ModelAdmin):
     fields = ('name', ('x_min', 'x_max'), ('y_max', 'y_min'), 'geographical_zone', 'owner')  
     search_fields = ('name', 'geographical_zone__name')
     readonly_fields = ('x_min', 'x_max', 'y_min', 'y_max', 'geographical_zone', 'owner')
-    list_per_page = 25
+    list_per_page = 50
 #    inlines = [SurveyDataInline,]
+
+class CrownDiameterAdmin(admin.ModelAdmin):
+    list_display = ('name',)  
+    fields = ('name',)  
+    search_fields = ('name',)
+    list_per_page = 50
 
 """
 class PhotoAdmin(admin.ModelAdmin):
@@ -93,7 +99,7 @@ class PhotoAdmin(admin.ModelAdmin):
 admin.site.register(AOI, AOIAdmin)
 admin.site.register(SurveyData, SurveyDataAdmin)
 admin.site.register(CanopyStatus)
-admin.site.register(CrownDiameter)
+admin.site.register(CrownDiameter,CrownDiameterAdmin)
 #admin.site.register(Metadata)
 admin.site.register(GGZ)
 #admin.site.register(Photo, PhotoAdmin)
