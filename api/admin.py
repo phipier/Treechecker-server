@@ -47,7 +47,7 @@ class PhotoInline(admin.TabularInline):
         return mark_safe('<img src="{url}" height="{height}"/>'.format(
             url = obj.img.url,
             height=200
-            #height=obj.img.height/4,
+            #height=obj.img.height/4,nex
             )
     )
     """

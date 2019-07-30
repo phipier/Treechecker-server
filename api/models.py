@@ -66,6 +66,7 @@ class GeographicalZone(models.Model):
 	name = models.CharField(max_length=255, blank=False, unique=False)
 	country = models.ForeignKey(Country, null=True, on_delete=models.SET_NULL)
 	wms_url = models.TextField("WMS URLs", blank=False, null=False, unique=False)
+	features = models.TextField("Features", null=True, unique=False)
 
 	x_min = models.FloatField("longitude min (in decimal degrees)", blank=False, unique=False)
 	x_max = models.FloatField("longitude max (in decimal degrees)", blank=False, unique=False)

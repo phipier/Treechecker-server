@@ -32,7 +32,6 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = ('key' ,'name', 'username', 'email', 'occupation', 'country',
 			'language')
 
-
 class GeographicalZoneSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
 
@@ -47,7 +46,7 @@ class GeographicalZoneSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = GeographicalZone
-		fields = ('key', 'name', 'wms_url', 'bbox', 'is_enabled')
+		fields = ('key', 'name', 'wms_url', 'features', 'bbox', 'is_enabled')
 
 class GGZSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
@@ -56,7 +55,6 @@ class GGZSerializer(serializers.ModelSerializer):
 		"""Meta class to map serializer's fields with the model fields."""
 		model = GGZ
 		fields = ('group_id', 'geographical_zone_id')
-
 
 class AOIReadSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
@@ -90,7 +88,6 @@ class AOIWriteSerializer(serializers.ModelSerializer):
 		"""Meta class to map serializer's fields with the model fields."""
 		model = AOI
 		fields = ('name', 'x_min', 'x_max', 'y_min', 'y_max', 'geographical_zone', 'owner')
-
 
 class TreeSpeciesSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""
