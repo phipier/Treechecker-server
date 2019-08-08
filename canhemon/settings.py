@@ -1,3 +1,4 @@
+import socket
 import os
 import datetime
 
@@ -12,7 +13,6 @@ DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'eqekTflbQR'
 
-import socket
 
 HOSTNAME = socket.gethostname()
 
@@ -31,7 +31,6 @@ else:
     ALLOWED_HOSTS = ['treechecker.pythonanywhere.com']
 
 
-
 # set models ordering
 """
 ADMIN_ORDERING = [
@@ -45,13 +44,13 @@ ADMIN_ORDERING = [
 # Application definition
 
 INSTALLED_APPS = [
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'rest_framework',
+    'django.contrib.admin',
+   	'django.contrib.auth',
+   	'django.contrib.contenttypes',
+   	'django.contrib.sessions',
+   	'django.contrib.messages',
+   	'django.contrib.staticfiles',
+   	'rest_framework',
     'api.apps.ApiConfig',
     'corsheaders'
 ]
@@ -111,25 +110,25 @@ else:
 
 if SERVER_ENV == "DEV":
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'canhemon',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'canhemon',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
     }
-}
 else:
     DATABASES = {
-    'default':{
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Treechecker$db',
-        'USER': 'Treechecker',
-        'PASSWORD': 'Ispra678',
-        'HOST': 'Treechecker.mysql.pythonanywhere-services.com',
-        'PORT': '',
-        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'Treechecker$db',
+            'USER': 'Treechecker',
+            'PASSWORD': 'Ispra678',
+            'HOST': 'Treechecker.mysql.pythonanywhere-services.com',
+            'PORT': '',
+            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
         }
     }
 
@@ -218,9 +217,9 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR,'debug.log'),
-            'backupCount': 2, # keep at most 10 log files
-            'maxBytes': 5242880, # 5*1024*1024 bytes (5MB)
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+            'backupCount': 2,  # keep at most 10 log files
+            'maxBytes': 5242880,  # 5*1024*1024 bytes (5MB)
         },
     },
     'loggers': {
