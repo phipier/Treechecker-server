@@ -13,13 +13,18 @@ DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'eqekTflbQR'
 
+import getpass
+username = getpass.getuser()
 
 HOSTNAME = socket.gethostname()
 
 if HOSTNAME.startswith("accent") or HOSTNAME.startswith("fise"):
     SERVER_ENV = "DEV"
+elif username.startswith("TreecheckerSTG"):
+    SERVER_ENV = "STG"
 else:
     SERVER_ENV = "PROD"
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -28,7 +33,7 @@ DEBUG = True
 if SERVER_ENV == "DEV":
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = ['treechecker.pythonanywhere.com']
+    ALLOWED_HOSTS = ['treecheckerSTG.pythonanywhere.com']
 
 
 # set models ordering
@@ -118,6 +123,18 @@ if SERVER_ENV == "DEV":
             'HOST': '127.0.0.1',
             'PORT': '5432',
         }
+    }
+elif SERVER_ENV == "STG":
+    DATABASES = { 
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'TreecheckerSTG$db',
+            'USER': 'TreecheckerSTG',
+            'PASSWORD': 'mytreecollectdatabase',
+            'HOST': 'TreecheckerSTG.mysql.pythonanywhere-services.com',
+            'PORT': '', 
+            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+        }   
     }
 else:
     DATABASES = {
