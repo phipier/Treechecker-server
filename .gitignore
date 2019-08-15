@@ -37,3 +37,5 @@ docs/
 web/canhemon/settings.py
 media/
 *.pyc
+.env
+

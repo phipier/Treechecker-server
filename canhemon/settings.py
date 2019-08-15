@@ -6,15 +6,12 @@ import datetime
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'eqekTflbQR'
+#SECRET_KEY = 'eqekTflbQR'
 
 import getpass
 username = getpass.getuser()
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 HOSTNAME = socket.gethostname()
 
@@ -34,17 +31,6 @@ if SERVER_ENV == "DEV":
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = ['treecheckerSTG.pythonanywhere.com']
-
-
-# set models ordering
-"""
-ADMIN_ORDERING = [
-    ('api', [
-        'GeographicalZone',
-        'AOI'
-    ]),
-]
-"""
 
 # Application definition
 
