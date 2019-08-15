@@ -113,7 +113,7 @@ def get_app_list(self, request):
         app['models'].sort(key=lambda x: object_list.index(x['object_name']))
         yield app
 
-admin.AdminSite.get_app_list = get_app_list
+#admin.AdminSite.get_app_list = get_app_list
 
 # defines content
 admin.site.site_header = 'Treechecker'
@@ -122,5 +122,5 @@ admin.site.site_url = None
 admin.site.index_title = 'Welcome to Treechecker'
 
 # empties action panel # TO DO delete action panel
-from django.contrib.admin.models import LogEntry
-LogEntry.objects.all().delete()
+#from django.contrib.admin.models import LogEntry
+#LogEntry.objects.all().delete()
