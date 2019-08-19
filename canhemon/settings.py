@@ -7,12 +7,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'eqekTflbQR'
 
-import getpass
-username = getpass.getuser()
+#import getpass
+#username = getpass.getuser()
+
 SECRET_KEY = os.getenv("SECRET_KEY")
-
 
 HOSTNAME = socket.gethostname()
 
