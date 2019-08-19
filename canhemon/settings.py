@@ -13,24 +13,12 @@ import getpass
 username = getpass.getuser()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+
 HOSTNAME = socket.gethostname()
 
-if HOSTNAME.startswith("accent") or HOSTNAME.startswith("fise"):
-    SERVER_ENV = "DEV"
-elif username.startswith("TreecheckerSTG"):
-    SERVER_ENV = "STG"
-else:
-    SERVER_ENV = "PROD"
+ALLOWED_HOSTS = ['*']
 
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-if SERVER_ENV == "DEV":
-    ALLOWED_HOSTS = ['*']
-else:
-    ALLOWED_HOSTS = ['treecheckerSTG.pythonanywhere.com']
 
 # Application definition
 
@@ -79,61 +67,18 @@ WSGI_APPLICATION = 'canhemon.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-'''DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': 'canhemon',
-		'USER': 'canhemonDB',
-		'PASSWORD': 'MF}vXc`y56LE"W',
-		'HOST': '127.0.0.1',
-		'PORT': '5432',
-	}
+DATABASES = { 
+        'default': {
+            'ENGINE':   os.getenv("DATABASE_ENGINE"),
+            'NAME':     os.getenv("DATABASE_NAME").replace("\\",""),
+            'USER':     os.getenv("DATABASE_USER"),
+            'PASSWORD': os.getenv("DATABASE_PASSWORD"),
+            'HOST':     os.getenv("DATABASE_HOST"),
+            'PORT':     '', 
+            'OPTIONS':  {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+    }   
 }
-'''
-
-
-if SERVER_ENV == "DEV" or SERVER_ENV == "STG" or SERVER_ENV == "LOCAL":
-    DEBUG = True
-else:
-    DEBUG = False
-
-if SERVER_ENV == "DEV":
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'canhemon',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
-    }
-elif SERVER_ENV == "STG":
-    DATABASES = { 
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'TreecheckerSTG$db',
-            'USER': 'TreecheckerSTG',
-            'PASSWORD': 'mytreecollectdatabase',
-            'HOST': 'TreecheckerSTG.mysql.pythonanywhere-services.com',
-            'PORT': '', 
-            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-        }   
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'Treechecker$db',
-            'USER': 'Treechecker',
-            'PASSWORD': 'Ispra678',
-            'HOST': 'Treechecker.mysql.pythonanywhere-services.com',
-            'PORT': '',
-            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-        }
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
