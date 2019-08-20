@@ -2,6 +2,8 @@ import socket
 import os
 import datetime
 
+from env import *
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -11,7 +13,8 @@ DATA_DIR = os.path.dirname(os.path.dirname(__file__))
 #import getpass
 #username = getpass.getuser()
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+#SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = SECRET_KEY_val
 
 HOSTNAME = socket.gethostname()
 
@@ -69,11 +72,11 @@ WSGI_APPLICATION = 'canhemon.wsgi.application'
 
 DATABASES = { 
         'default': {
-            'ENGINE':   os.getenv("DATABASE_ENGINE"),
-            'NAME':     os.getenv("DATABASE_NAME").replace("\\",""),
-            'USER':     os.getenv("DATABASE_USER"),
-            'PASSWORD': os.getenv("DATABASE_PASSWORD"),
-            'HOST':     os.getenv("DATABASE_HOST"),
+            'ENGINE':   DATABASE_ENGINE,
+            'NAME':     DATABASE_NAME,
+            'USER':     DATABASE_USER,
+            'PASSWORD': DATABASE_PASSWORD,
+            'HOST':     DATABASE_HOST,
             'PORT':     '', 
             'OPTIONS':  {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     }   

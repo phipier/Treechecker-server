@@ -38,4 +38,4 @@ web/canhemon/settings.py
 media/
 *.pyc
 .env
-
+env.py
