@@ -1,7 +1,6 @@
 import socket
 import os
 import datetime
-
 from env import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,7 +19,7 @@ HOSTNAME = socket.gethostname()
 
 ALLOWED_HOSTS = ['*']
 
-DEBUG = True
+DEBUG = False
 
 # Application definition
 
