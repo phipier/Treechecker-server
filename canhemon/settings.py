@@ -68,18 +68,7 @@ WSGI_APPLICATION = 'canhemon.wsgi.application'
 
 
 # Database
-
-DATABASES = { 
-        'default': {
-            'ENGINE':   DATABASE_ENGINE,
-            'NAME':     DATABASE_NAME,
-            'USER':     DATABASE_USER,
-            'PASSWORD': DATABASE_PASSWORD,
-            'HOST':     DATABASE_HOST,
-            'PORT':     '', 
-            'OPTIONS':  {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    }   
-}
+# see file env.py in project folder
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
