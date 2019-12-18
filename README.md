@@ -1,11 +1,16 @@
 # Table of contents
 1. [Introduction](#introduction)
-2. [Installation](#installation)
-    1. [Requirements](#requirements)
-    2. [Instructions](#instructions)
+
+2. [Installation](#installation1)
+    1. [Python Anywhere](#Pythonanywhere)
     3. [Considerations](#considerations)
-3. [Database structure](#dbStructure)
-4. [REST API](#restAPI)
+
+2. [Installation](#installation2)
+    1. [Requirements](#requirements)
+    2. [Instructions](#instructions)    
+   
+4. [Database structure](#dbStructure)
+5. [REST API](#restAPI)
     1. [Notes](#notes)
     2. [API calls](#apiCalls)
         1. [Authentication methods](#authenticationMethods)
@@ -35,8 +40,126 @@ This document describes the server backend infraestructure of the Canhemon proje
 
 For a detailed explanation about this project please refer to the documentation [here](https://github.com/jessisena/TreeCheckerApp/blob/master/README.md).
 
-# Installation <a name="installation"></a>
+# Installation <a name="installation1"></a>
+## How to set up a new Treechecker-server on Pythonanywhere <a name="Pythonanywhere"></a>
+
+In this section, you will learn how to create a Treechecker server using Pythonanywhere a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime on a later date.		
+Source : https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
+●	Create a PAW account	
+-  Go to https://www.pythonanywhere.com and create an account
+NB: for a free account, the default URL address will be "your-username.pythonanywhere.com", think about it when you choose you username. It will not be possible to change it afterwards.
+●	Clone the Treechecker official repository
+Go to the Dashboard and open a bash console. Clone the treechecker-server repository
+$ cd
+$ git clone https://github.com/phipier/Treechecker-server.git 
+
+Alternatively:
+$ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git	
+●	Create a Python virtual environment	
+$ cd ~/treechecker-server
+$ mkvirtualenv --python=/usr/bin/python3.6 trckvirtualenv
+$ workon trckvirtualenv
+$ pip install -r requirements-paw.txt		
+●	Create a database	
+Go to Databases and create a MySQL database named "<your-username>$db" (only type db and the rest will be added automatically).		
+●	Set up project environment variables	
+Create and edit a new file named env.py in folder ~/treechecker-server:
+$ cd ~/treechecker-server
+$ vi env.py 
+
+Do the necessary replacements in the following values and then copy and paste it inside file env.py: 
+SECRET_KEY_val="<secret-key-of-your-choice>"
+DATABASES = {
+'default': {
+'HOST': "<your-username>.mysql.pythonanywhere-services.com",
+'NAME': "<your-username>$db",
+'USER': "<your-username>",
+'PASSWORD': "<your-db-password>",
+'PORT': '',
+'ENGINE': "django.db.backends.mysql",
+'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+}		
+●	Create a web app	
+Go back to Dashboard and click on "open web tab". "Add a new web app", and then make sure you choose "Manual Configuration", and then choose "Python 3.6", and then "Next" 
+- For "source code", use “/home/<your-username>/treechecker-server“ (The field "Working directory" should then be automatically set to : “/home/<your-username>/”  and field "WSGI configuration" to : “file:/var/www/<your-username>_pythonanywhere_com_wsgi.py”. If not, please set them to those values) 
+- Click on the "WSGI configuration" file name (<your-username>_pythonanywhere_com_wsgi.py) to edit it and replace the old content with the following content :
+#####################################################
+import os
+import sys
+
+path = '/home/<your-username>/treechecker-server'
+if path not in sys.path:
+sys.path.append(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'canhemon.settings'
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+#####################################################
+
+- For "virtual environment": /home/<your-username>/.virtualenvs/trckvirtualenv
+- For "static files": /static/ and /home/<your-username>/treechecker-server/static/
+- For "security": enable HTTPS		
+●	Initialise database model	
+$ cd ~/treechecker-server
+$ workon trckvirtualenv
+$ python manage.py makemigrations
+$ python manage.py migrate		
+●	Create an admin user	
+$ python manage.py createsuperuser
+●	Test server
+You may navigate to the following URL : your-username.pythonanywhere.com/config and log in using username and password of super user.		
+●	Configure Treechecker-server				
+Add Groups	
+Add Group "user" and add basic rights (add AOI ...)		
+Add Users	
+Add User + add group "user"		
+Add Region
+Fill field "WMS URLs"
+JSON format split into two parts :
+- BASE_WMS : A list of Background layers (only visible on map at AOI creation time)
+- DL_WMS : A list of WMS whose tiles will be downloaded when creating an area of interest (AOI) from the app.
+For example:
+{
+"BASE_WMS":[
+{
+"name":"OSM",
+"layerName":"OSM",
+"url":"https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+"attribution":"Map data © <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors",
+"maxZoom":"22",
+"maxNativeZoom":"19"
+}
+],
+"DL_WMS":[
+{
+"name":"Lombardia",
+"url":"https://www.cartografia.servizirl.it/viewer31/proxy/proxy.jsp?https://www.cartografia.servizirl.it/arcgis2/services/BaseMap/ortofoto2007UTM/ImageServer/WMSServer?",
+"layers":"0",
+"format":"image/png",
+"transparent":"true",
+"version":"1.1.0",
+"height":256,
+"width":256,
+"crs":"EPSG:4326",
+"maxZoom":"22",
+"maxNativeZoom":"19"
+}
+]
+}		
+
+## Considerations <a name="considerations"></a>
+In order for the API to properly work you should at least provide data to the following tables: *(You can follow the links to check in more detail what each table stores)*
+* [GeographicalZone](#geographicalZone)
+* [GGZ](#ggz)
+* [CrownDiameter](#crownDiameter)
+* [CanopyStatus](#canopyStatus)
+
+# How to install a new Treechecker-server "from scratch" on your own server <a name="installation"></a>
 ## Requirements <a name="requirements"></a>
+
+You need to have installed on your machine: a HTTP server (e.g. Apache), Virtualenv, GIT, postgreSQL
+
 The project has been developed and tested on a machine with the following software:
 * Apache HTTP Server 2.4.2
 * Python 3.6
@@ -48,7 +171,7 @@ The project has been developed and tested on a machine with the following softwa
 
 1. Get the code from the repository:
 ```bash
-    git clone https://github.com/jessisena/TreeCheckerApp.git
+    git clone https://github.com/phipier/Treechecker-app.git
 ```
 
 2. Install the project dependencies:
@@ -95,16 +218,113 @@ The project has been developed and tested on a machine with the following softwa
 
 7. **(Optional)** If you want to add example data to try the API you can import the *exampleData.sql* file to the database.
 
-## Considerations <a name="considerations"></a>
-In order for the API to properly work you should at least provide data to the following tables: *(You can follow the links to check in more detail what each table stores)*
-* [GeographicalZone](#geographicalZone)
-* [GGZ](#ggz)
-* [CrownDiameter](#crownDiameter)
-* [CanopyStatus](#canopyStatus)
+
+	
+●	Clone the treechecker-server repository in your projects folder
+$ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git	
+●	Create a Python virtual environment	
+$ cd ~/treechecker-server
+$ python3 -m venv trckvirtualenv
+$ source trckvirtualenv/bin/activate
+$ pip install -r requirements-paw.txt
+●	Install PgSQL	
+●	Create a database
+
+Go to Databases and create a database named "<your-databasename>" 		
+●	Set up project environment variables	
+$ cd ~/treechecker-server
+create and edit a new file named env.py in folder ~/treechecker-server:
+$ vi env.py
+Do the necessary replacements in the following values and then copy and paste it inside file env.py: 
+SECRET_KEY_val="<secret-key-of-your-choice>"
+DATABASES = {
+'default': {
+'HOST': "<your-hostaddress>",
+'NAME': "<your-databasename>",
+'USER': "<your-username>",
+'PASSWORD': "<your-db-password>",
+'PORT': '5432',
+'ENGINE': "django.db.backends.postgresql",
+'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+}		
+●	Configure Apache with WSGI	
+<project-folder>/canhemon/wsgi.py	
+"""
+WSGI config for canhemon project.
+It exposes the WSGI callable as a module-level variable named ``application``.
+For more information on this file, see
+https://docs.djangoproject.com/en/1.11/howto/deployment/wsgi/
+import os, sys, site
+import mod_wsgi
+
+ROOT_DIR = '/var/www/<treechecker.com>/site/TreeCheckerApp/web/'
+APP_DIR = '/var/www/<treechecker.com>/site/TreeCheckerApp/web/canhemon'
+VE_DIR = '/var/www/<treechecker.com>/site/venv/lib/python3.6/site-packages'
+
+sys.path.insert(0, ROOT_DIR)
+sys.path.insert(0, APP_DIR)
+
+sys.path.insert(1,VE_DIR)
+site.addsitedir(VE_DIR)
+
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "canhemon.settings")
+
+import signal
+import time
+
+application = get_wsgi_application()
+●	Apache configuration file /etc/httpd/conf.d/<treechecker.com>.conf	
+<VirtualHost *:80>
+ServerName <treechecker.com>
+#ServerAlias <treeck.com>
+DocumentRoot /var/www/<treechecker.com>/site/TreeCheckerApp/web/canhemon
+Alias /static/ /var/www/<treechecker.com>/site/TreeCheckerApp/web/static/
+
+# APACHE VIRTUAL HOST CUSTOM LOG DEFINITION
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+ErrorLog /var/www/<treechecker.com>/logs/error.log
+CustomLog /var/www/<treechecker.com>/logs/access.log combined
+# END APACHE VIRTUAL HOST CUSTOM LOG DEFINITION
+
+# <Location /admin>
+# Deny from all
+# Allow from 139.191.16.20
+# </Location>
+
+#HTTP Strict Transport Security (HSTS)(max-age=expireTime', where expireTime is the time in seconds)
+Header always set Strict-Transport-Security "max-age=31536000; includeSubdomains;"
+
+# APACHE VIRTUAL HOST DOCUMENTROOT DEFINITION
+<Directory /var/www/<treechecker.com>/site/TreeCheckerApp/web/canhemon>
+AllowOverride None
+Require all granted
+Options -Indexes +FollowSymLinks
+</Directory>
+# END APACHE VIRTUAL HOST DOCUMENTROOT DEFINITION
+
+<Directory /var/www/<treechecker.com>/site/TreeCheckerApp/web/static>
+Require all granted
+</Directory>
+
+RewriteEngine on
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [F]
+
+WSGIDaemonProcess treecheckerwsgi display-name=treecheckerDjango user=trck processes=2 threads=15 deadlock-timeout=30
+WSGIScriptAlias / /var/www/<treechecker.com>/site/TreeCheckerApp/web/canhemon/wsgi.py
+WSGIPassAuthorization On
+WSGIProcessGroup treecheckerwsgi
+</VirtualHost>
+
+
+
 
 # Database structure <a name="dbStructure"></a>
 This is the database schema diagram:
-![schema](https://github.com/jessisena/TreeCheckerApp/raw/master/web/docs/dbSchema.jpeg)
+![schema](https://github.com/phipier/TreeCheckerApp/raw/master/web/docs/dbSchema.jpeg)
 
 ## Country
 Stores countries information to be used by the users and geographical zones tables.
