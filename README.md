@@ -141,9 +141,11 @@ Add User + add group "user"
 Add Region  
 Fill field "WMS URLs"  
 JSON format split into two parts :  
-- BASE_WMS : A list of Background layers (only visible on map at AOI creation time)  
-- DL_WMS : A list of WMS whose tiles will be downloaded when creating an area of interest (AOI) from the app.  
+	BASE_WMS : A list of Background layers (only visible on map at AOI creation time)  
+	DL_WMS : A list of WMS whose tiles will be downloaded when creating an area of interest (AOI) from the app.  
+	
 For example:
+
 ```
 {
 "BASE_WMS":[
@@ -219,7 +221,7 @@ create and edit a file named env.py in the main folder:
 $ vi env.py
 ```
 
-Copy and paste it inside file env.py Do the necessary replacements and then :  
+Copy and paste the following into env.py and do the necessary replacements:  
 ```
 SECRET_KEY_val="<secret-key-of-your-choice>"
 DATABASES = {
@@ -234,8 +236,7 @@ DATABASES = {
 }
 ```
 
-Configure the database connection and static path:  
-* Open the file *TreecheckerApp\web\canhemon\settings.py* and edit the following lines:  
+Open the file *TreecheckerApp\web\canhemon\settings.py* and edit the following lines:  
 
 Set *DEBUG* to **False** to disable the Django warnings. *Note: leave it set to True while installing*  
 Set *ALLOWED_HOSTS* to an array with the domain which points to the server. **Please consider using a HTTPS enabled server for better security**  
