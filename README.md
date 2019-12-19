@@ -1,7 +1,7 @@
 # Table of contents
 1. [Introduction](#introduction)
 
-2. [Installation on PythonAnywhere](#Pythonanywhere) 
+2. [Installation on PythonAnywhere](#installation1) 
     1. [Steps](#steps)
     2. [Considerations](#considerations)
 
@@ -40,7 +40,7 @@ This document describes the server backend infraestructure of the Canhemon proje
 
 For a detailed explanation about this project please refer to the documentation [here](https://github.com/jessisena/TreeCheckerApp/blob/master/README.md).
 
-# How to install a new Treechecker-server on Pythonanywhere <a name="Pythonanywhere"></a>
+# Installation on PythonAnywhere <a name="installation1"></a>
 ## Steps <a name="steps"></a>
 
 In this section, you will learn how to create a Treechecker server using Pythonanywhere a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime on a later date.		
@@ -181,7 +181,7 @@ In order for the API to properly work you should at least provide data to the fo
 * [CrownDiameter](#crownDiameter)
 * [CanopyStatus](#canopyStatus)
 
-# How to install a new Treechecker-server on your own server <a name="installation2"></a>
+# Installation on your hosting server <a name="installation2"></a>
 ## Requirements <a name="requirements"></a>
 
 The project has been developed and tested on a machine with the following software:
@@ -192,23 +192,19 @@ The project has been developed and tested on a machine with the following softwa
 * Django 1.11.2
 
 ## Instructions <a name="instructions"></a>
-
-
-
 	
 ●	Clone the treechecker-server repository in your projects folder  
 ```
-$ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git  
+$ git clone https://github.com/phipier/Treechecker-server.git
 ```
+
 ●	Create a Python virtual environment  
 ```
 $ cd ~/treechecker-server
 $ python3 -m venv trckvirtualenv
 $ source trckvirtualenv/bin/activate
-$ pip install -r requirements-paw.txt
+$ pip install -r requirements.txt
 ```
-
-●	Install PgSQL  
 
 ●	Create a database  
 
@@ -218,12 +214,12 @@ Go to Databases and create a database named "<your-databasename>"
 ```
 $ cd ~/treechecker-server
 ```
-create and edit a new file named env.py in folder ~/treechecker-server:  
+create and edit a file named env.py in the main folder:  
 ```
 $ vi env.py
 ```
 
-Do the necessary replacements in the following values and then copy and paste it inside file env.py:  
+Copy and paste it inside file env.py Do the necessary replacements and then :  
 ```
 SECRET_KEY_val="<secret-key-of-your-choice>"
 DATABASES = {
@@ -238,56 +234,30 @@ DATABASES = {
 }
 ```
 
-1. Get the code from the repository:
-```bash
-    git clone https://github.com/phipier/Treechecker-app.git
-```
+Configure the database connection and static path:  
+* Open the file *TreecheckerApp\web\canhemon\settings.py* and edit the following lines:  
 
-2. Install the project dependencies:
-```bash
-    cd TreeCheckerApp\web\
-    pip3 install psycopg2
-    pip3 install djangorestframework
-    pip3 install markdown
-    pip3 install django-filter
-    pip3 install djangorestframework-jwt
-```
+Set *DEBUG* to **False** to disable the Django warnings. *Note: leave it set to True while installing*  
+Set *ALLOWED_HOSTS* to an array with the domain which points to the server. **Please consider using a HTTPS enabled server for better security**  
+Modify the *TIME_ZONE* setting to the timezone you want Django to be configured in.  
+Set the *STATIC_ROOT* to the directory where the uploaded images and the support files will be stored. *Note: Whatever you put inside this directory will be visible from outside* 
 
-3. Configure the database connection and static path:
-* Open the file *TreecheckerApp\web\canhemon\settings.py* and edit the following lines:
-
-**Line 24:** Change *SECRET_KEY* to a random string  
-**Line 27:** Set *DEBUG* to **False** to disable the Django warnings. *Note: leave it set to True while installing*  
-**Line 29:** Set *ALLOWED_HOSTS* to an array with the domain which points to the server. **Please consider using a HTTPS enabled server for better security**  
-**Line 79:** Modify the *DATABASES* object with the data pointing to you database server.  
-*NAME* is the name of the database Django will connect to  
-*USER* is the username used in the database connection  
-*PASSWORD* is the password of the database connection  
-*HOST* is the url pointing to the database server  
-*PORT* is the port where the connection should be made  
-**Line 133:** Modify the *TIME_ZONE* setting to the timezone you want Django to be configured in.  
-**Line 146:** Set the *STATIC_ROOT* to the directory where the uploaded images and the support files will be stored. *Note: Whatever you put inside this directory will be visible from outside* 
-
-4. Create the database structure running the following commands
+●	Create the database structure running the following commands
 ```bash
     cd TreecheckerApp\web\
     python manage.py makemigrations
     python manage.py migrate
 ```
 
-5. Create a Django superuser
+●	Create a Django superuser
 ```bash
     python manage.py createsuperuser
 ```
 
-6. Collect the static files
+●	Collect the static files
 ```bash
     python manage.py collectstatic
 ```
-
-7. **(Optional)** If you want to add example data to try the API you can import the *exampleData.sql* file to the database.
-
-
 
 ●	Configure Apache with WSGI  
 
