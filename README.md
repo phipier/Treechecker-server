@@ -344,7 +344,7 @@ WSGIProcessGroup treecheckerwsgi
 
 # Database structure <a name="dbStructure"></a>
 This is the database schema diagram:
-![schema](https://github.com/phipier/TreeCheckerApp/raw/master/web/docs/dbSchema.jpeg)
+![schema](https://github.com/phipier/TreeChecker-server/docs/dbSchema.jpeg)
 
 ## Country
 Stores countries information to be used by the users and geographical zones tables.
