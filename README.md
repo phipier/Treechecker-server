@@ -41,7 +41,7 @@ This document describes the server backend infrastructure of the Treechecker pro
 # Installation on PythonAnywhere <a name="installation1"></a>
 ## Steps <a name="steps"></a>
 
-In this section, you will learn how to install a Treechecker server using Pythonanywhere, a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime at a later date.		
+In this section, you will learn how to install a Treechecker server using PythonAnywhere, a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime at a later date.		
 Source : https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
 
 * Create a PythonAnywhere account	
@@ -238,7 +238,7 @@ DATABASES = {
 }
 ```
 
-Open the file *TreecheckerApp\web\canhemon\settings.py* and edit the following lines:  
+Open the file *<Project folder>\canhemon\settings.py* and edit the following lines:  
 
 Set *DEBUG* to **False** to disable the Django warnings. *Note: leave it set to True while installing*  
 Set *ALLOWED_HOSTS* to an array with the domain which points to the server. **Please consider using a HTTPS enabled server for better security**  
