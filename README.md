@@ -341,7 +341,6 @@ WSGIProcessGroup treecheckerwsgi
 </VirtualHost>
 ```
 
-
 # Database structure <a name="dbStructure"></a>
 This is the database schema diagram:
 ![schema](https://github.com/phipier/Treechecker-server/tree/master/docs/dbSchema.jpeg)
