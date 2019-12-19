@@ -48,8 +48,8 @@ Source : https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
 
 ●	Create a PAW account	
 
--  Go to https://www.pythonanywhere.com and create an account
-NB: for a free account, the default URL address will be "your-username.pythonanywhere.com", think about it when you choose you username. It will not be possible to change it afterwards.
+Go to https://www.pythonanywhere.com and create an account  
+NB: bear in mind that the default URL address will be "your-username.pythonanywhere.com" (for a free account, it will not be possible to change it afterwards)
 
 ●	Clone the Treechecker official repository
 
@@ -69,7 +69,7 @@ $ pip install -r requirements-paw.txt
 ```
 ●	Create a database  
 
-Go to Databases and create a MySQL database named "<your-username>$db" (only type db and the rest will be added automatically).
+Go to Databases and create a MySQL database named "<your-username>$db" (only type "db" and the rest will be added automatically).
 	
 ●	Set up project environment variables  
 	
@@ -179,7 +179,8 @@ For example:
 }		
 ```
 
-## Considerations <a name="considerations"></a>
+## Considerations <a name="considerations"></a>  
+
 In order for the API to properly work you should at least provide data to the following tables: *(You can follow the links to check in more detail what each table stores)*
 * [GeographicalZone](#geographicalZone)
 * [GGZ](#ggz)
