@@ -43,12 +43,14 @@ For a detailed explanation about this project please refer to the documentation 
 # Installation on PythonAnywhere <a name="installation1"></a>
 ## Steps <a name="steps"></a>
 
-In this section, you will learn how to create a Treechecker server using Pythonanywhere a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime on a later date.		
+In this section, you will learn how to install a Treechecker server using Pythonanywhere, a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime at a later date.		
 Source : https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
+
 ●	Create a PAW account	
 
 -  Go to https://www.pythonanywhere.com and create an account
 NB: for a free account, the default URL address will be "your-username.pythonanywhere.com", think about it when you choose you username. It will not be possible to change it afterwards.
+
 ●	Clone the Treechecker official repository
 
 Go to the Dashboard and open a bash console. Clone the treechecker-server repository
@@ -57,6 +59,7 @@ $ git clone https://github.com/phipier/Treechecker-server.git
 
 Alternatively:
 $ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git	
+
 ●	Create a Python virtual environment
 ```
 $ cd ~/treechecker-server  
