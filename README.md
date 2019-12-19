@@ -1,4 +1,4 @@
-# Table of contents
+# Treechecker server
 1. [Introduction](#introduction)
 
 2. [Installation on PythonAnywhere](#installation1) 
