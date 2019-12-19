@@ -193,6 +193,51 @@ The project has been developed and tested on a machine with the following softwa
 
 ## Instructions <a name="instructions"></a>
 
+
+
+	
+●	Clone the treechecker-server repository in your projects folder  
+```
+$ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git  
+```
+●	Create a Python virtual environment  
+```
+$ cd ~/treechecker-server
+$ python3 -m venv trckvirtualenv
+$ source trckvirtualenv/bin/activate
+$ pip install -r requirements-paw.txt
+```
+
+●	Install PgSQL  
+
+●	Create a database  
+
+Go to Databases and create a database named "<your-databasename>"  
+	
+●	Set up project environment variables  
+```
+$ cd ~/treechecker-server
+```
+create and edit a new file named env.py in folder ~/treechecker-server:  
+```
+$ vi env.py
+```
+
+Do the necessary replacements in the following values and then copy and paste it inside file env.py:  
+```
+SECRET_KEY_val="<secret-key-of-your-choice>"
+DATABASES = {
+'default': {
+'HOST': "<your-hostaddress>",
+'NAME': "<your-databasename>",
+'USER': "<your-username>",
+'PASSWORD': "<your-db-password>",
+'PORT': '5432',
+'ENGINE': "django.db.backends.postgresql",
+'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+}
+```
+
 1. Get the code from the repository:
 ```bash
     git clone https://github.com/phipier/Treechecker-app.git
@@ -243,48 +288,7 @@ The project has been developed and tested on a machine with the following softwa
 7. **(Optional)** If you want to add example data to try the API you can import the *exampleData.sql* file to the database.
 
 
-	
-●	Clone the treechecker-server repository in your projects folder  
-```
-$ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git  
-```
-●	Create a Python virtual environment  
-```
-$ cd ~/treechecker-server
-$ python3 -m venv trckvirtualenv
-$ source trckvirtualenv/bin/activate
-$ pip install -r requirements-paw.txt
-```
 
-●	Install PgSQL  
-
-●	Create a database  
-
-Go to Databases and create a database named "<your-databasename>"  
-	
-●	Set up project environment variables  
-```
-$ cd ~/treechecker-server
-```
-create and edit a new file named env.py in folder ~/treechecker-server:  
-```
-$ vi env.py
-```
-
-Do the necessary replacements in the following values and then copy and paste it inside file env.py:  
-```
-SECRET_KEY_val="<secret-key-of-your-choice>"
-DATABASES = {
-'default': {
-'HOST': "<your-hostaddress>",
-'NAME': "<your-databasename>",
-'USER': "<your-username>",
-'PASSWORD': "<your-db-password>",
-'PORT': '5432',
-'ENGINE': "django.db.backends.postgresql",
-'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-}
-```
 ●	Configure Apache with WSGI  
 
 <project-folder>/canhemon/wsgi.py	
