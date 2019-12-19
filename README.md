@@ -36,9 +36,7 @@
             6. [Get Canopy statuses](#getCanopyStatuses)
 
 # Introduction <a name="introduction"></a>
-This document describes the server backend infraestructure of the Canhemon project.
-
-For a detailed explanation about this project please refer to the documentation [here](https://github.com/jessisena/TreeCheckerApp/blob/master/README.md).
+This document describes the server backend infrastructure of the Treechecker project.
 
 # Installation on PythonAnywhere <a name="installation1"></a>
 ## Steps <a name="steps"></a>
@@ -46,12 +44,12 @@ For a detailed explanation about this project please refer to the documentation 
 In this section, you will learn how to install a Treechecker server using Pythonanywhere, a free hosting service. A free account will allow you a 1 GB database. You are free to upgrade your account anytime at a later date.		
 Source : https://help.pythonanywhere.com/pages/DeployExistingDjangoProject/
 
-●	Create a PAW account	
+* Create a PythonAnywhere account	
 
 Go to https://www.pythonanywhere.com and create an account  
 NB: bear in mind that the default URL address will be "your-username.pythonanywhere.com" (for a free account, it will not be possible to change it afterwards)
 
-●	Clone the Treechecker official repository
+* Clone the Treechecker official repository
 
 Go to the Dashboard and open a bash console. Clone the treechecker-server repository
 $ cd
@@ -60,18 +58,18 @@ $ git clone https://github.com/phipier/Treechecker-server.git
 Alternatively:
 $ git clone https://webgate.ec.europa.eu/CITnet/stash/scm/fiseapps/treechecker-server.git	
 
-●	Create a Python virtual environment
+* Create a Python virtual environment
 ```
 $ cd ~/treechecker-server  
 $ mkvirtualenv --python=/usr/bin/python3.6 trckvirtualenv  
 $ workon trckvirtualenv  
 $ pip install -r requirements-paw.txt   
 ```
-●	Create a database  
+* Create a database  
 
 Go to Databases and create a MySQL database named "<your-username>$db" (only type "db" and the rest will be added automatically).
 	
-●	Set up project environment variables  
+* Set up project environment variables  
 	
 Create and edit a new file named env.py in folder ~/treechecker-server:  
 ```
@@ -94,7 +92,7 @@ Do the necessary replacements in the following values and then copy and paste it
 	}
 ```
 
-●	Create a web app
+* Create a web app
 	
 Go back to Dashboard and click on "open web tab". "Add a new web app", and then make sure you choose "Manual Configuration", and then choose "Python 3.6", and then "Next"   
 - For "source code", use “/home/<your-username>/treechecker-server“ (The field "Working directory" should then be automatically set to : “/home/<your-username>/”  and field "WSGI configuration" to : “file:/var/www/<your-username>_pythonanywhere_com_wsgi.py”. If not, please set them to those values)   
@@ -120,7 +118,7 @@ application = get_wsgi_application()
 - For "static files": /static/ and /home/<your-username>/treechecker-server/static/
 - For "security": enable HTTPS	
 	
-●	Initialise database model	
+* Initialise database model	
 ```
 $ cd ~/treechecker-server
 $ workon trckvirtualenv
@@ -128,14 +126,14 @@ $ python manage.py makemigrations
 $ python manage.py migrate		
 ```
 
-●	Create an admin user	
+* Create an admin user	
 ```
 $ python manage.py createsuperuser
 ```
-●	Test server
+* Test server
 
 You may navigate to the following URL : your-username.pythonanywhere.com/config and log in using username and password of super user.		
-●	Configure Treechecker-server	
+* Configure Treechecker-server	
 
 Add Groups  
 Add Group "user" and add basic rights (add AOI ...)  
@@ -199,12 +197,12 @@ The project has been developed and tested on a machine with the following softwa
 
 ## Instructions <a name="instructions"></a>
 	
-●	Clone the treechecker-server repository in your projects folder  
+* Clone the treechecker-server repository in your projects folder  
 ```
 $ git clone https://github.com/phipier/Treechecker-server.git
 ```
 
-●	Create a Python virtual environment  
+* Create a Python virtual environment  
 ```
 $ cd ~/treechecker-server
 $ python3 -m venv trckvirtualenv
@@ -212,11 +210,11 @@ $ source trckvirtualenv/bin/activate
 $ pip install -r requirements.txt
 ```
 
-●	Create a database  
+* Create a database  
 
 Go to Databases and create a database named "<your-databasename>"  
 	
-●	Set up project environment variables  
+* Set up project environment variables  
 ```
 $ cd ~/treechecker-server
 ```
@@ -247,24 +245,24 @@ Set *ALLOWED_HOSTS* to an array with the domain which points to the server. **Pl
 Modify the *TIME_ZONE* setting to the timezone you want Django to be configured in.  
 Set the *STATIC_ROOT* to the directory where the uploaded images and the support files will be stored. *Note: Whatever you put inside this directory will be visible from outside* 
 
-●	Create the database structure running the following commands
+* Create the database structure running the following commands
 ```bash
     cd TreecheckerApp\web\
     python manage.py makemigrations
     python manage.py migrate
 ```
 
-●	Create a Django superuser
+* Create a Django superuser
 ```bash
     python manage.py createsuperuser
 ```
 
-●	Collect the static files
+* Collect the static files
 ```bash
     python manage.py collectstatic
 ```
 
-●	Configure Apache with WSGI  
+* Configure Apache with WSGI  
 
 <project-folder>/canhemon/wsgi.py	
 
@@ -297,7 +295,7 @@ import time
 application = get_wsgi_application()
 ```
 
-●	Apache configuration file /etc/httpd/conf.d/<treechecker.com>.conf  
+* Apache configuration file /etc/httpd/conf.d/<treechecker.com>.conf  
 ```
 <VirtualHost *:80>
 ServerName <treechecker.com>
