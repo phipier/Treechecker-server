@@ -1,5 +1,7 @@
 api/__pycache__/
 api/migrations/*
+./api/migrations/*
+api/migrations/
 !api/migrations/__init__.py
 
 canhemon/__pycache__/
