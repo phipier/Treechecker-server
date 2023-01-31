@@ -159,6 +159,21 @@ For example:
 		"maxNativeZoom":"19"
 	}
 ],
+"VIEWER_WMS":[
+	{
+		"name":"Lombardia",
+		"url":"https://www.cartografia.servizirl.it/viewer31/proxy/proxy.jsp?https://www.cartografia.servizirl.it/arcgis2/services/BaseMap/ortofoto2007UTM/ImageServer/WMSServer?",
+		"layers":"0",
+		"format":"image/png",
+		"transparent":"true",
+		"version":"1.1.0",
+		"height":256,
+		"width":256,
+		"crs":"EPSG:4326",
+		"maxZoom":"22",
+		"maxNativeZoom":"19"
+	}
+],
 "DL_WMS":[
 	{
 		"name":"Lombardia",
