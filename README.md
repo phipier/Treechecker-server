@@ -144,7 +144,8 @@ Add Region
 Fill field "WMS URLs"  
 JSON format split into two parts :  
 	BASE_WMS : A list of Background layers (only visible on map at AOI creation time)  
-	DL_WMS : A list of WMS whose tiles will be downloaded when creating an area of interest (AOI) from the app.  
+	VIEWER_WMS : A list of WMS layers that will be displaid on the interactive map when creating an area of interest (AOI) from the app.  
+	DL_WMS : A list of WMS whose tiles will be downloaded when creating an area of interest (AOI). The tiles will be visible offline on the interactive map when adding an observation from the app. 
 	
 For example:
 
@@ -156,6 +157,21 @@ For example:
 		"layerName":"OSM",
 		"url":"https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
 		"attribution":"Map data © <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors",
+		"maxZoom":"22",
+		"maxNativeZoom":"19"
+	}
+],
+"VIEWER_WMS":[
+	{
+		"name":"Lombardia",
+		"url":"https://www.cartografia.servizirl.it/viewer31/proxy/proxy.jsp?https://www.cartografia.servizirl.it/arcgis2/services/BaseMap/ortofoto2007UTM/ImageServer/WMSServer?",
+		"layers":"0",
+		"format":"image/png",
+		"transparent":"true",
+		"version":"1.1.0",
+		"height":256,
+		"width":256,
+		"crs":"EPSG:4326",
 		"maxZoom":"22",
 		"maxNativeZoom":"19"
 	}
