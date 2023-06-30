@@ -103,6 +103,7 @@ Go back to Dashboard and click on "open web tab". "Add a new web app", and then 
 import os
 import sys
 
+# add your project path (check path and spelling, it is case sensitive)
 path = '/home/<your-username>/treechecker-server'
 if path not in sys.path:
 sys.path.append(path)
