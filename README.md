@@ -133,7 +133,7 @@ $ python manage.py createsuperuser
 ```
 * Test server
 
-You may navigate to the following URL : your-username.pythonanywhere.com/config and log in using username and password of super user.		
+You may navigate to the following URL : your-username.pythonanywhere.com/admin and log in using username and password of super user.		
 * Configure Treechecker-server	
 
 Add Groups  
@@ -205,7 +205,7 @@ In order for the API to properly work you should at least provide data to the fo
 # Installation on your hosting server <a name="installation2"></a>
 ## Requirements <a name="requirements"></a>
 
-The project has been developed and tested on a machine with the following software:
+The project has been developed using:
 * Apache HTTP Server 2.4.2
 * Python 3.6
 * Python3-pip 8.1.1
