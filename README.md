@@ -133,7 +133,7 @@ $ python manage.py createsuperuser
 ```
 * Test server
 
-You may navigate to the following URL : your-username.pythonanywhere.com/admin and log in using username and password of super user.		
+You may navigate to the following URL : your-username.pythonanywhere.com/settings and log in using username and password of super user.		
 * Configure Treechecker-server	
 
 Add Groups  
