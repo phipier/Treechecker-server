@@ -207,7 +207,7 @@ class PhotoSerializer(serializers.ModelSerializer):
 	class Meta:
 		"""Meta class to map serializer's fields with the model fields."""
 		model = Photo
-		fields = ('key', 'image')
+		fields = ('key',)
 
 class PhotoWriteSerializer(serializers.ModelSerializer):
 	"""Serializer to map the Model instance into JSON format."""

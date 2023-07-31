@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView, exception_handler
 from rest_framework.exceptions import Throttled
+from django.shortcuts import get_object_or_404
 
 from .models import *
 from .serializers import *
@@ -88,30 +89,83 @@ def userView(request):
 	return JsonResponse(serialized.data, safe=False)
 
 
+from datetime import datetime
+
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated,))
 def addObservation(request, id):
-	aoiId = int(id)
-	aoi = AOI.objects.filter(id=aoiId)
+    aoiId = int(id)
+    aoi = AOI.objects.filter(id=aoiId)
+    user_id = request.user.id
+    user = get_object_or_404(User, id=user_id)
+    user_name = user.name
+    user_username = user.username
 
-	if(aoi):
-		aoi = aoi[0]
-		if(aoi.owner.id == request.user.id):
-			data = JSONParser().parse(request)			
-			data['aoi'] = aoiId			
-			serialized = SurveyDataWriteSerializer(data=data, context={'request': request})
+    print('{timestamp} -- addObservation. User ID: {user_id}, Name: {user_name}, Username: {user_username}, aoi_id: {id_aoi}'.format(
+        timestamp=datetime.utcnow().isoformat(),
+        user_id=user_id,
+        user_name=user_name,
+        user_username=user_username,
+        id_aoi=aoiId
+    ))
 
-			if (serialized.is_valid()):
-				serialized = serialized.save()
-				serialized = SurveyDataSerializer(serialized, context={'request': request}, many=False)
-				return JsonResponse(serialized.data, safe=False)
-			else:
-				return Response(serialized.errors)
-		else:
-			return Response(status=status.HTTP_403_FORBIDDEN)
+    if aoi:
+        aoi = aoi[0]
+        aoi_name = aoi.name
 
-	else:
-		return Response(status=status.HTTP_404_NOT_FOUND)
+        if aoi.owner.id == request.user.id:
+            data = JSONParser().parse(request)
+            data['aoi'] = aoiId
+            serialized = SurveyDataWriteSerializer(data=data, context={'request': request})
+
+            #print(json.dumps(serialized, indent=2))
+
+            if serialized.is_valid():
+                serialized = serialized.save()
+                serialized = SurveyDataSerializer(serialized, context={'request': request}, many=False)
+
+                print(json.dumps(serialized.data, indent=2))
+
+                print('{timestamp} -- addImage: response. User ID: {user_id}, Name: {user_name}, Username: {user_username}, aoi_id: {id_aoi}, aoi_name: {aoi_name}, data:{data}'.format(
+                    timestamp=datetime.utcnow().isoformat(),
+                    user_id=user_id,
+                    user_name=user_name,
+                    user_username=user_username,
+                    id_aoi=aoiId,
+                    aoi_name=aoi_name,
+                    data=data
+                ))
+                return JsonResponse(serialized.data, safe=False)
+            else:
+                print('{timestamp} -- addObservation: error 400. User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+                    timestamp=datetime.utcnow().isoformat(),
+                    user_id=user_id,
+                    user_name=user_name,
+                    user_username=user_username
+                ))
+                print('Errors:', serialized.errors)
+                return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            print('{timestamp} -- addObservation: error 403. User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+                timestamp=datetime.utcnow().isoformat(),
+                user_id=user_id,
+                user_name=user_name,
+                user_username=user_username
+            ))
+
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+    else:
+        print('{timestamp} -- addObservation: error 404. User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+            timestamp=datetime.utcnow().isoformat(),
+            user_id=user_id,
+            user_name=user_name,
+            user_username=user_username
+        ))
+
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -188,48 +242,75 @@ def getTreeSpecies(idOrName, request):
 		serialized = TreeSpeciesSerializer(serialized, context={'request': request}, many=False)
 		return serialized.data['key']
 
-
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated,))
 def addImage(request):
-	data = JSONParser().parse(request)
-	serialized = PhotoWriteSerializer(data=data, context={'request': request})
 
-	if (serialized.is_valid()):
-		obs = SurveyData.objects.filter(id=data['survey_data'])
-		if (obs):
-			if(obs[0].owner.id == request.user.id):
-				
+    user_id = request.user.id
+    user = get_object_or_404(User, id=user_id)
+    user_name = user.name
+    user_username = user.username
 
-				# access the data as serializer.validated_data['keys']
-				# save the MyPhoto obj lets call it myphoto
-				# get the base64 string 
-				# imgstr64 = serialized.validated_data['image']
+    print('{timestamp} -- addImage. User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+        timestamp=datetime.utcnow().isoformat(),
+        user_id=user_id,
+        user_name=user_name,
+        user_username=user_username
+    ))
 
-				serialized = serialized.save()
+    data = JSONParser().parse(request)
+    serialized = PhotoWriteSerializer(data=data, context={'request': request})
 
-				# format, imgstr = imgstr64.split(';base64,')
+    if serialized.is_valid():
+        obs = SurveyData.objects.filter(id=data['survey_data'])
+        if obs:
+            if obs[0].owner.id == request.user.id:
 
-				# ext = format.split('/')[-1]
-				
-				# imgcf = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-				##imgname = '%s.jpg'%(str(myphoto.id))
-				# imagePath = 'surveydata/' + get_random_string(length=32) + '.' + ext
-				# path = djangoSettings.MEDIA_ROOT + '/' + imagePath
+                serialized = serialized.save()
 
-				# myphoto.img.save(path, imgcf)
-	
+                serialized = PhotoSerializer(serialized, context={'request': request}, many=False)
 
-				serialized = PhotoSerializer(serialized, context={'request': request}, many=False)
-				return JsonResponse(serialized.data, safe=False)
-			else:
-				return Response(status=status.HTTP_403_FORBIDDEN)
+                print('{timestamp} -- addImage: response. User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+                    timestamp=datetime.utcnow().isoformat(),
+                    user_id=user_id,
+                    user_name=user_name,
+                    user_username=user_username
+                ))
+                return JsonResponse(serialized.data, safe=False)
 
-		else:
-			return Response(status=503)
+            else:
+                print('{timestamp} -- addImage: error 403. User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+                    timestamp=datetime.utcnow().isoformat(),
+                    user_id=user_id,
+                    user_name=user_name,
+                    user_username=user_username
+                ))
 
-	else:
-		return Response(serialized.errors, status=503)
+                return Response(status=status.HTTP_403_FORBIDDEN)
+
+        else:
+            print('{timestamp} -- addImage: error 503 (2). User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+                timestamp=datetime.utcnow().isoformat(),
+                user_id=user_id,
+                user_name=user_name,
+                user_username=user_username
+            ))
+
+            return Response(status=503)
+
+    else:
+
+        print('{timestamp} -- addImage: error 503 (1). User ID: {user_id}, Name: {user_name}, Username: {user_username}'.format(
+            timestamp=datetime.utcnow().isoformat(),
+            user_id=user_id,
+            user_name=user_name,
+            user_username=user_username
+        ))
+
+        print(serialized.errors)
+        #return Response(serialized.errors, status=503)
+        return Response(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['GET'])
