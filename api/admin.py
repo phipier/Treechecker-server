@@ -27,7 +27,261 @@ class ExportCsvMixin:
 
         return response
 
-    export_as_csv.short_description = "Export Selected"
+    export_as_csv.short_description = "Export selected as CSV"
+
+from django.db.models.fields.related import ForeignKey
+import json
+import datetime
+
+
+class ExportGeoJSONMixin:
+    def export_as_geojson(self, request, queryset):
+        meta = self.model._meta
+        fields = meta.fields
+
+        features = []
+        for obj in queryset:
+            properties = {}
+            for field in fields:
+                if isinstance(field, ForeignKey):
+                    related_obj = getattr(obj, field.name)
+                    properties[field.name] = str(related_obj)
+                else:
+                    properties[field.name] = getattr(obj, field.name)
+
+            feature = {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [obj.longitude, obj.latitude]
+                },
+                "properties": properties
+            }
+            features.append(feature)
+
+        geojson = {
+            "type": "FeatureCollection",
+            "features": features,
+            "crs": {
+                "type": "EPSG",
+                "properties": {
+                    "code": 4326
+                }
+            }
+        }
+
+        response = HttpResponse(content_type='application/json')
+        response['Content-Disposition'] = 'attachment; filename={}.geojson'.format(meta)
+        response.write(self.json_serializable(geojson))
+        return response
+
+    export_as_geojson.short_description = "Export Selected as GeoJSON"
+
+    def json_serializable(self, obj):
+        def converter(o):
+            if isinstance(o, datetime.datetime):
+                return o.__str__()
+
+        return json.dumps(obj, default=converter, indent=4)
+
+    export_as_geojson.short_description = "Export selected as GeoJSON"
+
+'''
+import geopandas as gpd
+from shapely.geometry import Point
+import pandas as pd
+from django.http import FileResponse
+import os
+import tempfile
+
+class ExportGeoPackageMixin:
+    def export_as_geopackage(self, request, queryset):
+        meta = self.model._meta
+        fields = meta.fields
+
+        data = []
+        for obj in queryset:
+            row = {}
+            for field in fields:
+                if isinstance(field, ForeignKey):
+                    related_obj = getattr(obj, field.name)
+                    row[field.name] = str(related_obj)
+                else:
+                    row[field.name] = getattr(obj, field.name)
+            row["geometry"] = Point(obj.longitude, obj.latitude)
+            data.append(row)
+
+        gdf = gpd.GeoDataFrame(data, geometry='geometry')
+
+        with tempfile.NamedTemporaryFile(suffix=".gpkg", delete=False) as tmp:
+            gdf.to_file(tmp.name, driver="GPKG")
+            tmp.seek(0)
+            response = FileResponse(open(tmp.name, 'rb'), content_type='application/geopackage')
+            response['Content-Disposition'] = 'attachment; filename={}.gpkg'.format(meta)
+
+        os.unlink(tmp.name)  # remove the temporary file
+
+        return response
+
+    export_as_geopackage.short_description = "Export Selected as GeoPackage"
+'''
+
+from django.http import FileResponse
+from django.db.models import ForeignKey
+import geopandas as gpd
+from shapely.geometry import Point
+import uuid
+import tempfile
+import os
+from shapely.wkt import dumps
+
+class ExportMixinPandas:
+    EPSG_code = 4326
+    def create_geodataframe(self, queryset):
+        data = []
+        fields = self.model._meta.fields
+        exclude_fields = ['creation_date', 'update_date']  # exclude these fields
+        for obj in queryset:
+            row = {}
+            for field in fields:
+                if isinstance(field, ForeignKey):
+                    related_obj = getattr(obj, field.name)
+                    row[field.name] = str(related_obj)
+                elif field.name not in exclude_fields:  # exclude fields here
+                    row[field.name] = getattr(obj, field.name)
+            row['geometry'] = Point(obj.longitude, obj.latitude)
+            data.append(row)
+
+        gdf = gpd.GeoDataFrame(data, geometry='geometry')
+        gdf.set_crs(epsg=self.EPSG_code, inplace=True)
+
+        return gdf
+
+    from shapely.wkt import dumps
+
+    def generate_response(self, gdf, driver, content_type, extension):
+        filename_path = f"/tmp/{uuid.uuid4().hex}.{extension}"
+        try:
+            if extension == "csv":
+                # Convert the geometry column to WKT format with SRID for CSV
+                #epsg_code = self.EPSG_code
+                #gdf['geometry'] = gdf['geometry'].apply(lambda x: f"SRID={epsg_code};{x.wkt}")
+                gdf.to_csv(filename_path, index=False)
+            else:
+                gdf.to_file(filename_path, driver=driver)
+
+            response = FileResponse(open(filename_path, 'rb'), content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename="surveydata.{extension}"'
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            raise
+        finally:
+            if os.path.exists(filename_path):
+                os.remove(filename_path)
+            elif os.path.isdir(filename_path):
+                shutil.rmtree(filename_path)
+        return response
+
+    def generate_response2(self, gdf, driver, content_type, extension):
+        with tempfile.NamedTemporaryFile(suffix=f".{extension}", delete=True) as temp_file:
+            if extension == "csv":
+                gdf.to_csv(temp_file, index=False)
+            else:
+                gdf.to_file(temp_file.name, driver=driver)
+            temp_file.seek(0)
+            response = FileResponse(temp_file, content_type=content_type)
+            response['Content-Disposition'] = f'attachment; filename="data.{extension}"'
+            return response
+
+    def export_as_csv_pandas(self, request, queryset):
+        gdf = self.create_geodataframe(queryset)
+        return self.generate_response(gdf, "", 'text/csv', 'csv')
+
+    export_as_csv_pandas.short_description = "Export selected data as a CSV file"
+
+    def export_as_geopackage_pandas(self, request, queryset):
+        gdf = self.create_geodataframe(queryset)
+        return self.generate_response(gdf, "GPKG", 'application/geopackage', 'gpkg')
+
+    export_as_geopackage_pandas.short_description = "Export selected data as a GeoPackage file"
+
+    def export_as_geojson_pandas(self, request, queryset):
+        gdf = self.create_geodataframe(queryset)
+        return self.generate_response(gdf, "GeoJSON", 'application/json', 'geojson')
+
+    export_as_geojson_pandas.short_description = "Export selected data as a GeoJSON file"
+
+    def export_as_shapefile_pandas(self, request, queryset):
+        gdf = self.create_geodataframe(queryset)
+        return self.generate_response(gdf, "ESRI Shapefile", 'application/zip', 'zip')
+
+    export_as_shapefile_pandas.short_description = "Export selected data as a shapefile"
+
+
+'''
+from osgeo import ogr
+import os
+import tempfile
+from django.http import FileResponse
+from django.db import models
+from django.utils import timezone
+
+class ExportMixin:
+    def create_data_source(self, driver_name, file_extension, queryset):
+        tmp = tempfile.NamedTemporaryFile(suffix=file_extension, delete=False)
+        driver = ogr.GetDriverByName(driver_name)
+        data_source = driver.CreateDataSource(tmp.name)
+
+        layer = data_source.CreateLayer("SurveyData", geom_type=ogr.wkbPoint)
+        for field in self.model._meta.fields:
+            field_name = field.name
+            ogr_field = ogr.FieldDefn(field_name, ogr.OFTString)
+            layer.CreateField(ogr_field)
+
+        for obj in queryset:
+            feature = ogr.Feature(layer.GetLayerDefn())
+            for field in self.model._meta.fields:
+                field_name = field.name
+                field_value = getattr(obj, field_name)
+                if isinstance(field_value, models.Model):
+                    field_value = str(field_value)
+                feature.SetField(field_name, field_value)
+
+            wkt = f"POINT ({obj.longitude} {obj.latitude})"
+            point = ogr.CreateGeometryFromWkt(wkt)
+            feature.SetGeometry(point)
+            layer.CreateFeature(feature)
+            feature = None
+
+        data_source.SyncToDisk()
+        data_source = None
+
+        return tmp
+
+    def delete_temp_file(self, tmp):
+        os.unlink(tmp.name)
+
+    def export_as_geopackage_ogr(self, request, queryset):
+        tmp = self.create_data_source("GPKG", ".gpkg", queryset)
+        with open(tmp.name, 'rb') as fp:
+            response = FileResponse(fp, content_type='application/geopackage')
+            response['Content-Disposition'] = f'attachment; filename="{self.model.__name__}_{timezone.now().strftime("%Y%m%d%H%M%S")}.gpkg"'
+        response.closed = lambda: self.delete_temp_file(tmp)
+        return response
+
+    export_as_geopackage_ogr.short_description = "Export Selected as GeoPackage OGR"
+
+    def export_as_geojson_ogr(self, request, queryset):
+        tmp = self.create_data_source("GeoJSON", ".geojson", queryset)
+        with open(tmp.name, 'rb') as fp:
+            response = FileResponse(fp, content_type='application/json')
+            response['Content-Disposition'] = f'attachment; filename="{self.model.__name__}_{timezone.now().strftime("%Y%m%d%H%M%S")}.geojson"'
+        response.closed = lambda: self.delete_temp_file(tmp)
+        return response
+
+    export_as_geojson_ogr.short_description = "Export Selected as GeoJSON OGR"
+'''
+
 
 class PhotoInline(admin.TabularInline):
     model = Photo
@@ -35,11 +289,11 @@ class PhotoInline(admin.TabularInline):
     #readonly_fields = ["thumbnail_img","thumbnail_image"]
     readonly_fields = ["picture"]
     fields = ('picture','comment','compass')
-    
+
     def picture(self, obj):
         return mark_safe('<img src="{base64str}" height="{height}"/>'.format(
             base64str = obj.image,
-            height=500            
+            height=500
             )
     )
     """
@@ -57,28 +311,28 @@ class PhotoInline(admin.TabularInline):
 #    extra=0
 
 # @admin.register(SurveyData)
-class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin):
+class SurveyDataAdmin(admin.ModelAdmin, ExportCsvMixin, ExportGeoJSONMixin, ExportMixinPandas):
     list_display = ('name', 'aoi', 'canopy_status',  'longitude', 'latitude')
     fields = ('aoi', ('name', 'comment'), ('canopy_status','tree_species','crown_diameter'), ('longitude', 'latitude'))
     search_fields = ('name', 'aoi__name', 'canopy_status__name', 'tree_species__name')
     readonly_fields = ('aoi',)
     list_filter = ('canopy_status','aoi')
     list_per_page = 50
-    actions = ["export_as_csv"]
+    actions = ["export_as_geojson_pandas", "export_as_geopackage_pandas", "export_as_csv_pandas"]
     inlines = [PhotoInline,]
     save_on_top = True
 
 class AOIAdmin(admin.ModelAdmin):
-    list_display = ('name', 'geographical_zone')  
-    fields = ('name', ('x_min', 'x_max'), ('y_max', 'y_min'), 'geographical_zone', 'owner')  
+    list_display = ('name', 'geographical_zone')
+    fields = ('name', ('x_min', 'x_max'), ('y_max', 'y_min'), 'geographical_zone', 'owner')
     search_fields = ('name', 'geographical_zone__name')
     readonly_fields = ('x_min', 'x_max', 'y_min', 'y_max', 'geographical_zone', 'owner')
     list_per_page = 50
 #    inlines = [SurveyDataInline,]
 
 class CrownDiameterAdmin(admin.ModelAdmin):
-    list_display = ('name',)  
-    fields = ('name',)  
+    list_display = ('name',)
+    fields = ('name',)
     search_fields = ('name',)
     list_per_page = 50
 

@@ -20,3 +20,7 @@ pytz
 six
 typed-ast
 wrapt
+geopandas
+fiona
+shapely
+pyproj
