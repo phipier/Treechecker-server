@@ -281,7 +281,7 @@ Set the *STATIC_ROOT* to the directory where the uploaded images and the support
 
 * Configure Apache with WSGI  
 
-<project-folder>/canhemon/wsgi.py	
+file at /canhemon/wsgi.py	
 
 ```
 # WSGI config for canhemon project.
