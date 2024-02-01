@@ -281,7 +281,7 @@ Set the *STATIC_ROOT* to the directory where the uploaded images and the support
 
 * Configure Apache with WSGI  
 
-file at /canhemon/wsgi.py	
+file at projectfolder/canhemon/wsgi.py	
 
 ```
 # WSGI config for canhemon project.
@@ -312,7 +312,8 @@ import time
 application = get_wsgi_application()
 ```
 
-* Apache configuration file /etc/httpd/conf.d/<treechecker.com>.conf  
+* Apache configuration file /etc/httpd/conf.d/treecheckerprojectname.conf
+  
 ```
 <VirtualHost *:80>
 ServerName <treechecker.com>
