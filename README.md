@@ -264,7 +264,7 @@ Set the *STATIC_ROOT* to the directory where the uploaded images and the support
 
 * Create the database structure running the following commands
 ```bash
-    cd TreecheckerApp\web\
+    cd TreecheckerApp/web/
     python manage.py makemigrations
     python manage.py migrate
 ```
