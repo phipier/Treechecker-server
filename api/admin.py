@@ -194,10 +194,10 @@ class PhotoInline(admin.TabularInline):
 
 # @admin.register(SurveyData)
 class SurveyDataAdmin(admin.ModelAdmin, ExportMixinPandas):
-    list_display = ('name', 'aoi', 'canopy_status',  'longitude', 'latitude')
-    fields = ('aoi', ('name', 'comment'), ('canopy_status','tree_species','crown_diameter'), ('longitude', 'latitude'))
+    list_display = ('owner','name', 'aoi', 'canopy_status',  'longitude', 'latitude')
+    fields = (('owner', 'creation_date','update_date'), 'aoi', ('name', 'comment'), ('canopy_status','tree_species','crown_diameter'), ('longitude', 'latitude'))
     search_fields = ('name', 'aoi__name', 'canopy_status__name', 'tree_species__name')
-    readonly_fields = ('aoi',)
+    readonly_fields = ('owner','creation_date', 'update_date','aoi',)
     list_filter = ('canopy_status','aoi')
     list_per_page = 50
     actions = ["export_as_geojson_pandas", "export_as_geopackage_pandas", "export_as_csv_pandas"]
