@@ -146,8 +146,10 @@ class CrownDiameter(models.Model):
 	name = models.CharField(max_length=50, blank=False, unique=True)
 
 	class Meta:
-		verbose_name = "Crown Diameter"
-		verbose_name_plural = "Crown Diameters"
+		#verbose_name = "Crown Diameter"
+		verbose_name = "Disease Severity"
+		#verbose_name_plural = "Crown Diameters"
+		verbose_name_plural = "Disease Severities"
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
@@ -159,8 +161,10 @@ class CanopyStatus(models.Model):
 	name = models.CharField(max_length=50, blank=False, unique=True)
 
 	class Meta:
-		verbose_name = "Canopy Status"
-		verbose_name_plural = "Canopy Status"
+		#verbose_name = "Canopy Status"
+		verbose_name = "Plant disease"
+		#verbose_name = "Canopy Status"
+		verbose_name_plural = "Plant diseases"
 
 	def __str__(self):
 		"""Return a human readable representation of the model instance."""
