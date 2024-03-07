@@ -186,8 +186,8 @@ class SurveyData(models.Model):
 	update_date = models.DateTimeField(auto_now=True)
 
 	class Meta:
-		verbose_name = "Survey Data"
-		verbose_name_plural = "Survey Data"
+		verbose_name = "Observation"
+		verbose_name_plural = "Observations"
 
 	@property
 	def position(self):
