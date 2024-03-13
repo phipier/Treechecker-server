@@ -33,10 +33,11 @@ def custom_exception_handler(exc, context):
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def getGZ(request):
-	objs = GeographicalZone.objects.all()
+	# Retrieve the geographical zones available to the authenticated user
+	objs = request.user.gz
 	serialized = GeographicalZoneSerializer(objs, context={'request': request}, many=True)
 
-	return JsonResponse(serialized.data, safe=False);
+	return JsonResponse(serialized.data, safe=False)
 
 
 # Gets the areas of interest for a given zone with the user observations or adds a new one
