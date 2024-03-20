@@ -204,6 +204,21 @@ class SurveyDataAdmin(admin.ModelAdmin, ExportMixinPandas):
     inlines = [PhotoInline,]
     save_on_top = True
 
+    def get_queryset(self, request):
+        """
+        Override to filter the queryset based on the user's access to geographical zones.
+        """
+        qs = super().get_queryset(request)
+
+        # If the user is a superuser, return the full queryset
+        if request.user.is_superuser:
+            return qs
+
+        # Otherwise, filter the queryset based on the user's accessible geographical zones
+        user_gzs = GGZ.objects.filter(group__user=request.user).values_list('geographical_zone', flat=True)
+        return qs.filter(aoi__geographical_zone__in=user_gzs)
+
+
 class AOIAdmin(admin.ModelAdmin):
     list_display = ('name', 'geographical_zone')
     fields = ('name', ('x_min', 'x_max'), ('y_max', 'y_min'), 'geographical_zone', 'owner')
