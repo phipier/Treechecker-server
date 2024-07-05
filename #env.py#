@@ -1,12 +1,11 @@
-SECRET_KEY_val="JRC"  
+SECRET_KEY_val="<secret-key-of-your-choice>"  
 DATABASES = {  
 	'default': {  
-	'HOST': "Treechecker.mysql.pythonanywhere-services.com",
-	'NAME': "Treechecker$db",
-	'USER': "Treechecker",
-	'PASSWORD': "y4Edj72gEJkh6S2",
+	'HOST': "<your-username>.mysql.pythonanywhere-services.com",
+	'NAME': "<your-username>$db",
+	'USER': "<your-username>",
+	'PASSWORD': "<your-db-password>",
 	'PORT': '',
 	'ENGINE': "django.db.backends.mysql",
 	'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-        }
-}ccCccCC
+}
