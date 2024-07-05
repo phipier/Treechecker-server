@@ -92,6 +92,22 @@ Do the necessary replacements in the following values and then copy and paste it
 	}
 ```
 
+exemple:
+```
+SECRET_KEY_val="JRC"  
+DATABASES = {  
+	'default': {  
+	'HOST': "Treechecker.mysql.pythonanywhere-services.com",
+	'NAME': "Treechecker$db",
+	'USER': "Treechecker",
+	'PASSWORD': "y4Edj72gEJkh6S2",
+	'PORT': '',
+	'ENGINE': "django.db.backends.mysql",
+	'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+        }
+}
+```
+
 * Create a web app
 	
 Go back to Dashboard and click on "open web tab". "Add a new web app", and then make sure you choose "Manual Configuration", and then choose "Python 3.6", and then "Next"   
