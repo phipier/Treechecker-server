@@ -94,7 +94,7 @@ Do the necessary replacements in the following values and then copy and paste it
 
 exemple:
 ```
-SECRET_KEY_val="JRC"  
+SECRET_KEY_val="mykey"  
 DATABASES = {  
 	'default': {  
 	'HOST': "Treechecker.mysql.pythonanywhere-services.com",
