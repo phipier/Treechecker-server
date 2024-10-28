@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from api.models import Country  # Ensure this matches the location of your Country model
 
+# file used to create a list of users and passwords (for training purposes)
+
 User = get_user_model()
 
 class Command(BaseCommand):
@@ -13,7 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         num_users = kwargs['num_users']
-        password = 'btsf2024'
+        password = 'PASSWORD'
         
         # Assuming 'Country' model exists and has at least one entry
         default_country = Country.objects.first()
