@@ -11,9 +11,9 @@ import os, sys, site
 
 import mod_wsgi
 
-ROOT_DIR = '/var/www/treechecker.ies.jrc.it/site/TreeCheckerApp/web/'
-APP_DIR = '/var/www/treechecker.ies.jrc.it/site/TreeCheckerApp/web/canhemon'
-VE_DIR = '/var/www/treechecker.ies.jrc.it/site/venv/lib/python3.6/site-packages'
+ROOT_DIR = '/var/www/appname/site/TreeCheckerApp/web/'
+APP_DIR = '/var/www/appname/site/TreeCheckerApp/web/canhemon'
+VE_DIR = '/var/www/appname/site/venv/lib/python3.6/site-packages'
 
 sys.path.insert(0, ROOT_DIR)
 sys.path.insert(0, APP_DIR)
